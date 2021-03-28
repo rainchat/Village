@@ -1,0 +1,104 @@
+Settings:
+  defaultRole: Visitor
+
+
+VillageRoles:
+  Owner:
+    material: gold_ingot
+    name: '&6Owner'
+    lore:
+      - '&eClick &7to change the'
+      - '&7permissions for the group'
+    permissions:
+      - ANVIL_ACCESS
+      - ARMOR_STAND_ACCESS
+      - BARREL_ACCESS
+      - BLOCK_BREAK
+      - BLOCK_PLACE
+      - BREWING_ACCESS
+      - CHEST_ACCESS
+      - CLAIM_LAND
+      - DISBAND
+      - DRAGON_EGG_TOUCH
+      - EDIT_CLAIMS
+      - EDIT_PERMISSIONS
+      - FURNACE_ACCESS
+      - HOME
+      - RESTONE_INVENTORY_ACCESS
+      - INVITE_MEMBER
+      - KICK_MEMBER
+      - LAVA_PLACEMENT
+      - PANEL
+      - RENAME_ISLAND
+      - SET_DESCRIPTION
+      - SHULKER_ACCESS
+      - WATER_PLACEMENT
+  Moderator:
+    material: oak_leaves
+    name: '&eModerator'
+    lore:
+      - '&eClick &7to change the'
+      - '&7permissions for the group'
+    permissions:
+      - ANVIL_ACCESS
+      - ARMOR_STAND_ACCESS
+      - BARREL_ACCESS
+      - BLOCK_BREAK
+      - BLOCK_PLACE
+      - BREWING_ACCESS
+      - CHEST_ACCESS
+      - CLAIM_LAND
+      - DISBAND
+      - DRAGON_EGG_TOUCH
+      - EDIT_CLAIMS
+      - EDIT_PERMISSIONS
+      - FURNACE_ACCESS
+      - HOME
+      - RESTONE_INVENTORY_ACCESS
+      - INVITE_MEMBER
+      - KICK_MEMBER
+      - LAVA_PLACEMENT
+      - PANEL
+      - RENAME_ISLAND
+      - SET_DESCRIPTION
+      - SHULKER_ACCESS
+      - WATER_PLACEMENT
+  Member:
+    material: oak_sapling
+    name: '&aMember'
+    lore:
+      - '&eClick &7to change the'
+      - '&7permissions for the group'
+    permissions:
+      - ANVIL_ACCESS
+      - ARMOR_STAND_ACCESS
+      - BARREL_ACCESS
+      - BLOCK_BREAK
+      - BLOCK_PLACE
+      - BREWING_ACCESS
+      - CHEST_ACCESS
+      - DRAGON_EGG_TOUCH
+      - FURNACE_ACCESS
+      - HOME
+      - RESTONE_INVENTORY_ACCESS
+      - LAVA_PLACEMENT
+      - SHULKER_ACCESS
+      - WATER_PLACEMENT
+  Visitor:
+    material: wheat_seeds
+    name: '&7Visitor'
+    lore:
+      - '&eClick &7to change the'
+      - '&7permissions for the group'
+    permissions:
+      - ANVIL_ACCESS
+      - BARREL_ACCESS
+      - BREWING_ACCESS
+      - CHEST_ACCESS
+      - DRAGON_EGG_TOUCH
+      - FURNACE_ACCESS
+      - HOME
+      - RESTONE_INVENTORY_ACCESS
+      - LAVA_PLACEMENT
+      - SHULKER_ACCESS
+      - WATER_PLACEMENT

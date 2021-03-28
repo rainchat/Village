@@ -1,0 +1,15 @@
+name: Villages
+version: ${project.version}
+main: com.rainchat.villages.Villages
+api-version: 1.13
+authors: [ rain_chat ]
+description: Fork of the original Villages (by StefTheDev)
+
+softdepend: [PlaceholderAPI, WorldGuard]
+
+commands:
+  village:
+    description: The village command.
+    aliases:
+      - villages
+      - v

@@ -1,0 +1,135 @@
+Messages:
+  disband: '&7Oh no! &a&l{0} &7fell into ruins...'
+  help: Type &b/villages help [page] &7to look at the help pages.
+  no-command-permission: You do not have permissions for that command.
+  no-permission: You do not have permissions for &b{0}&7.
+  page-format: '&b{0}. &7{1}'
+  page-help: '&e&lHelp: &7[{0}/{1}]'
+  page-limit: There are only &b{0} &7help pages.
+  page-next: Type &b/villages help {0} &7for the next page.
+  page-previous: Type &b/villages help {0} &7for the previous page.
+  player-offline: The player &b{0} &7does not seem to be online.
+  prefix: '&e&lVillages: &7'
+  request-accept: '&a[Accept]'
+  request-deny: '&c[Deny]'
+  request-denied: You have decided to deny the request.
+  request-disband: Are you sure you want to disband the village? Members of your village
+    may not be happy!
+  request-invite: You have sent an invite request to &b{0}&7.
+  request-invite-self: You can't invite yourself.
+  request-invite-target: You have been invited to join &b{0}&7. Do you wish to join?
+  request-invite-target-not-null: The player &b{0} &7already belongs to a village.
+  request-join: '&b{0} &7has joined the village.'
+  request-join-target: '&7You have joined the &b{0} &7village.'
+  request-kick: Are you sure you want to kick &b{0} &7 from your village?
+  request-kick-self: You can't kick yourself from the village.
+  request-kick-target: You have been kicked from the &b{0} &7village.
+  request-null: You do not have any pending requests.
+  request-pending: You already have a pending request.
+  tooltip: '&7Click to select.'
+  usage: 'Usage: &b{0}'
+  village-admin-enabled: 'Admin mode: &aenabled'
+  village-admin-null: No village exists at your current location.
+  village-admin-unclaim: Successfully unclaimed land at &b{0} &7from &b{1}&7.
+  village-admin-disabled: 'Admin mode: &cdisabled'
+  village-already-owner: You can't set the new owner to yourself.
+  village-claim: 'You have claimed new land for your village: &b{0}'
+  village-claim-owned: The land you are trying to claim already belongs to your village.
+  village-claim-other: The land you are trying to claim belongs to another village.
+  village-teleport: 'You have been teleported to claim: &b{0}&7'
+  village-cooldown: You can teleport home again in &b{0} &7seconds.
+  village-create: You have established a new village named &b{0}&7.
+  village-create-other: The name of your village can't be longer than &b32 &7characters.
+  village-description-limit: The description of your village can't be longer than
+    &b32&7 characters.
+  village-exists: A village named &b{0} &7has already been established.
+  village-home: You have been teleported to your village home.
+  village-leave: You have left the &b{0} &7village.
+  village-leave-owner: You can't leave your current village because you are the owner.
+  village-max-claims: You can't claim more than &b{0} &7land for you village.
+  village-member-null: '&b{0} &7does not seem to belong to your village.'
+  village-not-null: You already belong to a village.
+  village-null: You do not belong to a village.
+  village-owner: You must be the owner of the village to do that action.
+  village-rename: 'You have renamed the village to: &b{0}'
+  village-set-description: 'You have set the village description to: &b{0}'
+  village-set-home: You have set the home for your village.
+  village-set-owner: You have set the new village owner to &b{0}&7.
+  village-unclaim: You have unclaimed land for your village.
+  village-unclaim-one: You can't unclaim because your village only owns one land.
+  village-unclaim-other: The land you are trying to unclaim does not belong to your
+    village.
+  world-guard: You can't claim in a worldguard region.
+  world-not-enabled: Villages is not enabled in this world.
+Menu:
+  back:
+    title: '&fBack'
+    lore:
+      - '&7Click for previous menu.'
+  claim:
+    title: '&a{0}'
+    lore:
+      - '&7Click to teleport to claim.'
+  claims:
+    title: '&b&lClaims'
+    lore:
+      - '&7Edit claims of your village.'
+  disabled:
+    title: '&c{0}'
+    lore:
+      - '&7Click to enable Permission.'
+  disband:
+    title: '&c&lDisband'
+    lore:
+      - '&7Click to disband your village.'
+  enabled:
+    title: '&a{0}'
+    lore:
+      - '&7Click to disable Permission.'
+  global-permissions:
+    title: '&6&lGlobal Permissions'
+    lore:
+      - '&7Click to change global permissions.'
+  home:
+    title: '&6&lHome'
+    lore:
+      - '&7Teleport to village home.'
+  information:
+    title: '&e&lInformation'
+    lore:
+      - '&7&o{description}'
+      - ''
+      - '&7Owner: &b{owner}'
+      - '&7Level: &a{level}'
+      - '&7Members: &e{members}'
+      - '&7Claims: &c{claims}'
+  member:
+    title: '&a{0}'
+    lore:
+      - '&7Click to edit member.'
+  members:
+    title: '&a&lMembers'
+    lore:
+      - '&7Edit members of your village.'
+  next:
+    title: '&fNext'
+    lore:
+      - '&7Click for next page.'
+  peaceful:
+    enabled:
+      title: '&aPeaceful'
+      lore:
+        - '&7Click to disable.'
+    disabled:
+      title: '&cPeaceful'
+      lore:
+        - '&7Click to enable.'
+  previous:
+    title: '&fPrevious'
+    lore:
+      - '&7Click for previous page.'
+Title:
+  header: '&e&l{0}!'
+  footer: '&7Welcome to &b{0}''s &7village.'
+  wilderness-header: '&a&lWilderness!'
+  wilderness-footer: '&7Fresh new land awaits you.'
