@@ -1,8 +1,8 @@
 package com.rainchat.villages.menus;
 
+import com.rainchat.villages.data.enums.VillagePermission;
 import com.rainchat.villages.data.village.Village;
 import com.rainchat.villages.data.village.VillageMember;
-import com.rainchat.villages.data.village.VillagePermission;
 import com.rainchat.villages.data.village.VillageRequest;
 import com.rainchat.villages.managers.VillageManager;
 import com.rainchat.villages.utilities.general.Chat;
@@ -39,23 +39,22 @@ public class PanelMenu extends Menu {
                 new MenuItem(11, claims(), inventoryClickEvent -> new ClaimsMenu(getPlugin(), villageManager, village, 1).build().open((Player) inventoryClickEvent.getWhoClicked())),
                 new MenuItem(12, information(), null),
                 new MenuItem(13, globalPermissions(), inventoryClickEvent -> new GlobalPermissionsMenu(getPlugin(), village, villageManager).build().open((Player) inventoryClickEvent.getWhoClicked())),
-                new MenuItem(14, peaceful(village.isPeaceful()), inventoryClickEvent -> {
-                    if (village.isPeaceful()) {
-                        village.setPeaceful(false);
-                    } else {
-                        village.setPeaceful(true);
-                    }
-                }),
+                new MenuItem(
+                        14,
+                        roleMenu(),
+                        inventoryClickEvent -> {
+                            new RoleMenu(getPlugin(), village, villageManager).build().open((Player) inventoryClickEvent.getWhoClicked());
+                        }),
                 new MenuItem(15, disband(), inventoryClickEvent -> {
                     Player player = (Player) inventoryClickEvent.getWhoClicked();
                     player.closeInventory();
                     VillageMember villageMember = village.getMember(player.getUniqueId());
-                    if (villageMember.hasPermission(VillagePermission.DISBAND) || village.getOwner().equals(player.getUniqueId())) {
+                    if (villageManager.checkPermission(VillagePermission.DISBAND, village, villageMember.getUniqueId())) {
                         VillageRequest villageRequest = villageManager.getRequest(player);
                         if (villageRequest == null) {
                             villageRequest = new VillageRequest(village, player.getUniqueId(), null, VillageRequest.VillageRequestAction.DISBAND);
                             villageRequest.send();
-                            villageManager.addP(villageRequest, player);
+                            villageManager.addPlayer(villageRequest, player);
                         } else {
                             player.sendMessage(Chat.format(Message.REQUEST_PENDING.toString()));
                         }
@@ -93,7 +92,6 @@ public class PanelMenu extends Menu {
             string = string.replace("{claims}", String.valueOf(village.getVillageClaims().size()));
             string = string.replace("{members}", String.valueOf(village.getVillageMembers().size()));
             string = string.replace("{description}", village.getDescription());
-            string = string.replace("{level}", String.valueOf(village.getLevel()));
             updated.add(string);
         }
 
@@ -120,20 +118,15 @@ public class PanelMenu extends Menu {
                 .build();
     }
 
-    private ItemStack peaceful(boolean enabled) {
-        if (enabled) {
-            return new Item()
-                    .material(Material.LIME_DYE)
-                    .name(Message.MENU_PEACEFUL_ENABLED_TITLE.toString())
-                    .lore(Message.MENU_PEACEFUL_ENABLED_LORE.toList())
-                    .build();
-        } else {
-            return new Item()
-                    .material(Material.LIME_DYE)
-                    .name(Message.MENU_PEACEFUL_DISABLED_TITLE.toString())
-                    .lore(Message.MENU_PEACEFUL_DISABLED_LORE.toList())
-                    .build();
-        }
+    private ItemStack roleMenu() {
+        Item item = new Item();
+
+
+        item.material(Material.BOOKSHELF);
+        item.name(Message.MENU_ROLES_MENU_TITLE.toString());
+        item.lore(Message.MENU_ROLES_MENU_LORE.toList());
+
+        return item.build();
     }
 
 }

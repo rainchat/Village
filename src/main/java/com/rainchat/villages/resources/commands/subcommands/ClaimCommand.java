@@ -2,10 +2,10 @@ package com.rainchat.villages.resources.commands.subcommands;
 
 import com.rainchat.villages.Villages;
 import com.rainchat.villages.data.enums.ParticleTip;
+import com.rainchat.villages.data.enums.VillagePermission;
 import com.rainchat.villages.data.village.Village;
 import com.rainchat.villages.data.village.VillageClaim;
 import com.rainchat.villages.data.village.VillageMember;
-import com.rainchat.villages.data.village.VillagePermission;
 import com.rainchat.villages.hooks.WorldGuardHook;
 import com.rainchat.villages.managers.ConfigSettings;
 import com.rainchat.villages.managers.VillageManager;
@@ -34,7 +34,7 @@ public class ClaimCommand extends Command {
         Village village = villageManager.getVillage(player);
         if (village != null) {
             VillageMember villageMember = village.getMember(player.getUniqueId());
-            if (villageMember.hasPermission(VillagePermission.CLAIM_LAND) || village.getOwner().equals(player.getUniqueId()) || village.hasPermission(VillagePermission.CLAIM_LAND)) {
+            if (villageManager.checkPermission(VillagePermission.CLAIM_LAND, village, villageMember.getUniqueId())) {
                 Chunk chunk = player.getLocation().getChunk();
                 Village tempVillage = villageManager.getVillage(chunk);
                 if (tempVillage == null) {

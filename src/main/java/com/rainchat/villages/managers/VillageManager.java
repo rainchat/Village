@@ -1,22 +1,26 @@
 package com.rainchat.villages.managers;
 
-import com.rainchat.villages.data.village.*;
+import com.rainchat.villages.data.enums.VillagePermission;
+import com.rainchat.villages.data.village.Village;
+import com.rainchat.villages.data.village.VillageClaim;
+import com.rainchat.villages.data.village.VillageMember;
+import com.rainchat.villages.data.village.VillageRequest;
 import com.rainchat.villages.utilities.general.Manager;
+import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionAttachmentInfo;
 import org.bukkit.plugin.Plugin;
 
-import java.util.HashMap;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class VillageManager extends Manager<Village> {
 
     private final Plugin plugin;
     private final HashMap<UUID, VillageRequest> villageRequestHashMap = new HashMap<>();
+    private final Set<UUID> adminModePlayers = new HashSet<>();
 
     public VillageManager(Plugin plugin) {
         super("villages", plugin);
@@ -24,12 +28,20 @@ public class VillageManager extends Manager<Village> {
     }
 
 
-    public void addP(VillageRequest villageRequest, Player player) {
+    public void addPlayer(VillageRequest villageRequest, Player player) {
         villageRequestHashMap.put(player.getUniqueId(), villageRequest);
     }
 
-    public void removeP(Player player) {
+    public void addAdmin(Player player){
+        adminModePlayers.add(player.getUniqueId());
+    }
+
+    public void removePlayer(Player player) {
         villageRequestHashMap.remove(player.getUniqueId());
+    }
+
+    public void removeAdmin(Player player) {
+        adminModePlayers.remove(player.getUniqueId());
     }
 
     public Village getVillage(String string) {
@@ -112,14 +124,24 @@ public class VillageManager extends Manager<Village> {
         return max.get();
     }
 
-    public boolean checkPermission(VillagePermission villagePermission, Village village, Player player) {
-        if (village.getOwner().equals(player.getUniqueId())) {
+
+
+    public boolean checkPermission(VillagePermission islandPermission, Village village, Player player) {
+        if (village.getOwner().equals(player.getUniqueId()) && hasAdminMode(player.getUniqueId())) {
             return false;
-        } else if (village.getMember(player.getUniqueId()).hasPermission(villagePermission)) {
-            return false;
-        }
-        return (!village.hasPermission(villagePermission));
+        } else return !village.hasPermission(islandPermission, player.getUniqueId());
     }
+
+    public boolean checkPermission(VillagePermission islandPermission, Village village, UUID uuid) {
+        if (village.getOwner().equals(uuid)) {
+            return true;
+        } else return village.hasPermission(islandPermission, uuid);
+    }
+
+    public boolean hasAdminMode(UUID uuid){
+        return adminModePlayers.contains(uuid);
+    }
+
 
     private boolean chunkMatchesClaim(Chunk chunk, VillageClaim villageClaim) {
         return villageClaim.getX() == chunk.getX() && villageClaim.getZ() == chunk.getZ() && villageClaim.getWorld().equals(chunk.getWorld().getName());
@@ -144,6 +166,11 @@ public class VillageManager extends Manager<Village> {
             }
         }
         plugin.getLogger().info("Removed " + i + " inactive villages!");
+    }
+
+
+    public List<Village> getArray() {
+        return new ArrayList<>(toSet());
     }
 
     /*public Set<VillageRequest> getRequests() {

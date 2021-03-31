@@ -1,9 +1,9 @@
 package com.rainchat.villages.resources.commands.subcommands;
 
 
+import com.rainchat.villages.data.enums.VillagePermission;
 import com.rainchat.villages.data.village.Village;
 import com.rainchat.villages.data.village.VillageMember;
-import com.rainchat.villages.data.village.VillagePermission;
 import com.rainchat.villages.data.village.VillageRequest;
 import com.rainchat.villages.managers.VillageManager;
 import com.rainchat.villages.utilities.general.Chat;
@@ -27,12 +27,12 @@ public class DisbandCommand extends Command {
         Village village = villageManager.getVillage(player);
         if (village != null) {
             VillageMember villageMember = village.getMember(player.getUniqueId());
-            if (villageMember.hasPermission(VillagePermission.DISBAND) || village.getOwner().equals(player.getUniqueId()) || village.hasPermission(VillagePermission.DISBAND)) {
+            if (villageManager.checkPermission(VillagePermission.DISBAND, village, villageMember.getUniqueId())) {
                 VillageRequest villageRequest = villageManager.getRequest(player);
                 if (villageRequest == null) {
                     villageRequest = new VillageRequest(village, player.getUniqueId(), null, VillageRequest.VillageRequestAction.DISBAND);
                     villageRequest.send();
-                    villageManager.addP(villageRequest, player);
+                    villageManager.addPlayer(villageRequest, player);
                 } else {
                     player.sendMessage(Chat.format(Message.REQUEST_PENDING.toString()));
                 }

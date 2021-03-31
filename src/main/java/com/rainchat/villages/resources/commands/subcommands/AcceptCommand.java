@@ -25,7 +25,7 @@ public class AcceptCommand extends Command {
             player.sendMessage(Chat.format(Message.REQUEST_NULL.toString()));
         } else {
             villageRequest.complete(villageManager);
-            villageManager.removeP(player);
+            villageManager.removePlayer(player);
         }
         return false;
     }

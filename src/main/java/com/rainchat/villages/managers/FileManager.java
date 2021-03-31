@@ -336,6 +336,7 @@ public class FileManager {
 
         //ENUM_NAME("fileName.yml", "fileLocation.yml"),
         //ENUM_NAME("fileName.yml", "newFileLocation.yml", "oldFileLocation.yml"),
+        ROLES("roles.yml", "roles.yml"),
         CONFIG("config.yml", "config.yml");
 
         private String fileName;

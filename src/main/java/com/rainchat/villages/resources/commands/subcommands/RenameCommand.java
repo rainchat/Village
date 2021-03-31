@@ -1,8 +1,8 @@
 package com.rainchat.villages.resources.commands.subcommands;
 
+import com.rainchat.villages.data.enums.VillagePermission;
 import com.rainchat.villages.data.village.Village;
 import com.rainchat.villages.data.village.VillageMember;
-import com.rainchat.villages.data.village.VillagePermission;
 import com.rainchat.villages.managers.VillageManager;
 import com.rainchat.villages.utilities.general.Chat;
 import com.rainchat.villages.utilities.general.Command;
@@ -25,7 +25,7 @@ public class RenameCommand extends Command {
         Village village = villageManager.getVillage(player);
         if (village != null) {
             VillageMember villageMember = village.getMember(player.getUniqueId());
-            if (villageMember.hasPermission(VillagePermission.RENAME_VILLAGE) || village.getOwner().equals(player.getUniqueId()) || village.hasPermission(VillagePermission.RENAME_VILLAGE)) {
+            if (villageManager.checkPermission(VillagePermission.RENAME_VILLAGE, village, villageMember.getUniqueId())) {
                 if (args[1].length() > 32) {
                     player.sendMessage(Chat.format(Message.VILLAGE_CREATE_LIMIT.toString()));
                     return true;

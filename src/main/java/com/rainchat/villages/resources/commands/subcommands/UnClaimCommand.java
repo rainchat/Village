@@ -1,10 +1,10 @@
 package com.rainchat.villages.resources.commands.subcommands;
 
 import com.rainchat.villages.data.enums.ParticleTip;
+import com.rainchat.villages.data.enums.VillagePermission;
 import com.rainchat.villages.data.village.Village;
 import com.rainchat.villages.data.village.VillageClaim;
 import com.rainchat.villages.data.village.VillageMember;
-import com.rainchat.villages.data.village.VillagePermission;
 import com.rainchat.villages.managers.VillageManager;
 import com.rainchat.villages.utilities.general.Chat;
 import com.rainchat.villages.utilities.general.Command;
@@ -25,10 +25,29 @@ public class UnClaimCommand extends Command {
 
     @Override
     public boolean run(Player player, String[] args) {
+        // admin mode
+        if (villageManager.hasAdminMode(player.getUniqueId())){
+            Village village = villageManager.getVillage(player.getChunk());
+            if (village != null) {
+                if (village.getVillageClaims().size() > 1) {
+                    VillageClaim villageClaim = villageManager.getClaim(village, player.getLocation().getChunk());
+                    village.remove(villageClaim);
+                    ParticleSpawn.particleTusc(player, player.getChunk(), ParticleTip.UN_CLAIM);
+                    player.sendMessage(Chat.format(Message.VILLAGE_UNCLAIM.toString()));
+                } else {
+                    player.sendMessage(Chat.format(Message.VILLAGE_ADMIN_UNCLAIM_ONE.toString()));
+                }
+            } else {
+                player.sendMessage(Chat.format(Message.VILLAGE_ADMIN_NULL.toString()));
+            }
+            return true;
+        }
+
+        // normal player
         Village village = villageManager.getVillage(player);
         if (village != null) {
             VillageMember villageMember = village.getMember(player.getUniqueId());
-            if (villageMember.hasPermission(VillagePermission.UNCLAIM_LAND) || village.getOwner().equals(player.getUniqueId()) || village.hasPermission(VillagePermission.UNCLAIM_LAND)) {
+            if (villageManager.checkPermission(VillagePermission.UNCLAIM_LAND, village, villageMember.getUniqueId())) {
                 Village tempVillage = villageManager.getVillage(player.getLocation().getChunk());
                 if (tempVillage == village) {
                     if (village.getVillageClaims().size() > 1) {
@@ -46,7 +65,7 @@ public class UnClaimCommand extends Command {
         } else {
             player.sendMessage(Chat.format(Message.VILLAGE_NULL.toString()));
         }
-        return false;
+        return true;
     }
 
     @Override

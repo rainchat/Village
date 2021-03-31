@@ -2,6 +2,7 @@ package com.rainchat.villages.menus;
 
 import com.rainchat.villages.data.village.Village;
 import com.rainchat.villages.data.village.VillageMember;
+import com.rainchat.villages.managers.FileManager;
 import com.rainchat.villages.managers.VillageManager;
 import com.rainchat.villages.utilities.general.Item;
 import com.rainchat.villages.utilities.general.Message;
@@ -10,6 +11,7 @@ import com.rainchat.villages.utilities.menus.MenuItem;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
@@ -74,24 +76,35 @@ public class MembersMenu extends Menu {
         }
 
         List<VillageMember> villageMembers = new ArrayList<>(village.getVillageMembers());
+        for (VillageMember villageMember: villageMembers){
+            if (villageMember.getRole() == null){
+                villageMember.setRole("null");
+            }
+        }
         for (int i = 0; i < villageMembers.size(); i++) {
             if (i >= 27) break;
             int number = i + ((index - 1) * 27);
             if (number >= villageMembers.size()) break;
             VillageMember villageMember = villageMembers.get(number);
-            addItems(new MenuItem(i, member(villageMembers.get(number).getUniqueId()), inventoryClickEvent -> {
+            addItems(new MenuItem(i, member(villageMembers.get(number).getUniqueId(), villageMember), inventoryClickEvent -> {
                 inventoryClickEvent.getWhoClicked().closeInventory();
-                new PermissionsMenu(getPlugin(), village, villageManager, villageMember).build().open((Player) inventoryClickEvent.getWhoClicked());
+                new MemberRoleMenu(getPlugin(), village, villageManager, villageMember).build().open((Player) inventoryClickEvent.getWhoClicked());
             }));
         }
         return this;
     }
 
-    private ItemStack member(UUID uuid) {
+    private ItemStack member(UUID uuid, VillageMember villageMember) {
         OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
+        List<String> lore = Message.MENU_MEMBER_LORE.toList();
+        List<String> updated = new ArrayList<>();
+        for (String string : lore) {
+            string = string.replace("{role}", Objects.requireNonNull(villageMember.getRole()));
+            updated.add(string);
+        }
         return new Item()
                 .name(Message.MENU_MEMBER_TITLE.toString().replace("{0}", Objects.requireNonNull(offlinePlayer.getName())))
-                .lore(Message.MENU_MEMBER_LORE.toList())
+                .lore(updated)
                 .buildPlayer(offlinePlayer);
     }
 

@@ -1,7 +1,7 @@
 package com.rainchat.villages.menus;
 
+import com.rainchat.villages.data.enums.VillageGlobalPermission;
 import com.rainchat.villages.data.village.Village;
-import com.rainchat.villages.data.village.VillagePermission;
 import com.rainchat.villages.managers.VillageManager;
 import com.rainchat.villages.utilities.general.Item;
 import com.rainchat.villages.utilities.general.Message;
@@ -29,7 +29,7 @@ public class GlobalPermissionsMenu extends Menu {
     @Override
     public Menu build() {
         AtomicInteger atomicInteger = new AtomicInteger(-1);
-        Arrays.asList(VillagePermission.values()).forEach(villagePermission -> {
+        Arrays.asList(VillageGlobalPermission.values()).forEach(villagePermission -> {
             if (village.hasPermission(villagePermission)) {
                 addItems(new MenuItem(atomicInteger.addAndGet(1), enabled(villagePermission), event -> village.remove(villagePermission)));
             } else {
@@ -44,7 +44,7 @@ public class GlobalPermissionsMenu extends Menu {
         return this;
     }
 
-    private ItemStack disabled(VillagePermission villagePermission) {
+    private ItemStack disabled(VillageGlobalPermission villagePermission) {
 
         return new Item()
                 .material(Material.GRAY_DYE)
@@ -53,7 +53,7 @@ public class GlobalPermissionsMenu extends Menu {
                 .build();
     }
 
-    private ItemStack enabled(VillagePermission villagePermission) {
+    private ItemStack enabled(VillageGlobalPermission villagePermission) {
 
         return new Item()
                 .material(Material.LIME_DYE)

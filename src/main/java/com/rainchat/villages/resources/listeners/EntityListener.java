@@ -1,6 +1,7 @@
 package com.rainchat.villages.resources.listeners;
 
 import com.rainchat.villages.Villages;
+import com.rainchat.villages.data.enums.VillageGlobalPermission;
 import com.rainchat.villages.data.village.Village;
 import com.rainchat.villages.managers.VillageManager;
 import org.bukkit.block.Block;
@@ -26,7 +27,7 @@ public class EntityListener implements Listener {
             if (village == null) {
                 continue;
             }
-            if (village.isPeaceful()) {
+            if (village.hasPermission(VillageGlobalPermission.EXPLOSIONS)) {
                 event.setCancelled(true);
                 return;
             }
@@ -43,13 +44,15 @@ public class EntityListener implements Listener {
             Player player2 = (Player) event.getDamager();
             Village otherVillage = villageManager.getVillage(player2.getChunk());
 
+            if (villageManager.hasAdminMode(player2.getUniqueId())) return;
+
             if (entityVillage != null) {
-                if (entityVillage.isPeaceful()) {
+                if (entityVillage.hasPermission(VillageGlobalPermission.PVP)) {
                     event.setCancelled(true);
                 }
             }
             if (otherVillage != null) {
-                if (otherVillage.isPeaceful()) {
+                if (otherVillage.hasPermission(VillageGlobalPermission.PVP)) {
                     event.setCancelled(true);
                 }
             }

@@ -1,8 +1,8 @@
 package com.rainchat.villages.resources.listeners;
 
 import com.rainchat.villages.Villages;
+import com.rainchat.villages.data.enums.VillagePermission;
 import com.rainchat.villages.data.village.Village;
-import com.rainchat.villages.data.village.VillagePermission;
 import com.rainchat.villages.managers.VillageManager;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -25,6 +25,8 @@ public class VillageListener implements Listener {
         Player player = event.getPlayer();
         Block block = event.getBlock();
 
+        if (villageManager.hasAdminMode(player.getUniqueId())) return;
+
         Village currentVillage = villageManager.getVillage(block.getChunk());
         if (currentVillage == null) return;
 
@@ -42,6 +44,8 @@ public class VillageListener implements Listener {
     public void onBlockPlace(BlockPlaceEvent event) {
         Player player = event.getPlayer();
         Block block = event.getBlock();
+
+        if (villageManager.hasAdminMode(player.getUniqueId())) return;
 
         Village currentVillage = villageManager.getVillage(block.getChunk());
         if (currentVillage == null) return;

@@ -1,9 +1,9 @@
 package com.rainchat.villages.resources.commands.subcommands;
 
 import com.rainchat.villages.Villages;
+import com.rainchat.villages.data.enums.VillagePermission;
 import com.rainchat.villages.data.village.Village;
 import com.rainchat.villages.data.village.VillageMember;
-import com.rainchat.villages.data.village.VillagePermission;
 import com.rainchat.villages.managers.VillageManager;
 import com.rainchat.villages.utilities.general.Chat;
 import com.rainchat.villages.utilities.general.Command;
@@ -28,10 +28,9 @@ public class HomeCommand extends Command {
     @Override
     public boolean run(Player player, String[] args) {
         Village village = villageManager.getVillage(player);
-        Bukkit.broadcastMessage("Время последней активности деревни - " + villageManager.getActive(village));
         if (village != null) {
             VillageMember villageMember = village.getMember(player.getUniqueId());
-            if (villageMember.hasPermission(VillagePermission.HOME) || village.getOwner().equals(player.getUniqueId()) || village.hasPermission(VillagePermission.HOME)) {
+            if (villageManager.checkPermission(VillagePermission.HOME, village, villageMember.getUniqueId())) {
                 if (villageMember.hasCooldown()) {
                     player.sendMessage(Chat.format(Message.VILLAGE_COOLDOWN.toString().replace("{0}", String.valueOf((villageMember.getCooldown() / 1000) - (System.currentTimeMillis() / 1000)))));
                 } else {

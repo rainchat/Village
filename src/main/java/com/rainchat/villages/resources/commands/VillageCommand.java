@@ -11,6 +11,7 @@ import com.rainchat.villages.utilities.general.Message;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
+import org.bukkit.util.StringUtil;
 
 import java.io.IOException;
 import java.util.*;
@@ -26,7 +27,7 @@ public class VillageCommand extends Command implements TabCompleter {
         this.commands = new HashSet<>();
     }
 
-    public boolean run(Player player, String[] args) throws IOException {
+    public boolean run(Player player, String[] args) {
         List list = ConfigSettings.CLAIM_ENABLED_WORLDS_LIST.getList();
         List<String> enabledWorlds = new ArrayList<>();
 
@@ -77,25 +78,30 @@ public class VillageCommand extends Command implements TabCompleter {
 
     @Override
     public List<String> onTabComplete(CommandSender commandSender, org.bukkit.command.Command command, String s, String[] strings) {
-
-        List<String> list = new ArrayList<>();
+        List<String> completions = new ArrayList<>();
+        List<String> commands = new ArrayList<>();
         if (!(commandSender instanceof Player)) {
             return null;
         }
         Player player = (Player) commandSender;
         if (strings.length == 1) {
-            for (Command subCommand : commands) {
+            for (Command subCommand : this.commands) {
                 if (commandSender.hasPermission(toString() + ".command." + subCommand.toString())) {
-                    list.add(subCommand.toString());
+                    commands.add(subCommand.toString());
                 }
             }
         } else {
-            for (Command subCommand : commands) {
+            for (Command subCommand : this.commands) {
                 if (subCommand.toString().equalsIgnoreCase(strings[0])) {
-                    return subCommand.tabRun(player, strings);
+                    commands = subCommand.tabRun(player, strings);
                 }
             }
         }
-        return list;
+        if (commands == null){
+            return null;
+        }
+        StringUtil.copyPartialMatches(strings[strings.length-1], commands, completions);
+        Collections.sort(completions);
+        return completions;
     }
 }

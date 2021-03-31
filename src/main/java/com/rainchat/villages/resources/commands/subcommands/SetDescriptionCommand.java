@@ -1,8 +1,8 @@
 package com.rainchat.villages.resources.commands.subcommands;
 
+import com.rainchat.villages.data.enums.VillagePermission;
 import com.rainchat.villages.data.village.Village;
 import com.rainchat.villages.data.village.VillageMember;
-import com.rainchat.villages.data.village.VillagePermission;
 import com.rainchat.villages.managers.VillageManager;
 import com.rainchat.villages.utilities.general.Chat;
 import com.rainchat.villages.utilities.general.Command;
@@ -25,7 +25,7 @@ public class SetDescriptionCommand extends Command {
         Village village = villageManager.getVillage(player);
         if (village != null) {
             VillageMember villageMember = village.getMember(player.getUniqueId());
-            if (villageMember.hasPermission(VillagePermission.SET_DESCRIPTION) || village.getOwner().equals(player.getUniqueId()) || village.hasPermission(VillagePermission.SET_DESCRIPTION)) {
+            if (villageManager.checkPermission(VillagePermission.SET_DESCRIPTION, village, villageMember.getUniqueId())) {
                 StringBuilder description = new StringBuilder();
                 for (String string : args) {
                     if (!string.equalsIgnoreCase(toString())) description.append(string).append(" ");

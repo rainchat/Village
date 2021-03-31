@@ -1,6 +1,8 @@
 package com.rainchat.villages.data.village;
 
 
+import com.rainchat.villages.data.enums.VillagePermission;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -20,6 +22,7 @@ public class VillageRole {
     public void add(VillagePermission villagePermission) {
         islandPermissions.add(villagePermission);
     }
+
 
     public void remove(VillagePermission villagePermission) {
         islandPermissions.remove(villagePermission);

@@ -1,9 +1,9 @@
 package com.rainchat.villages.resources.commands.subcommands;
 
 import com.rainchat.villages.Villages;
+import com.rainchat.villages.data.enums.VillagePermission;
 import com.rainchat.villages.data.village.Village;
 import com.rainchat.villages.data.village.VillageMember;
-import com.rainchat.villages.data.village.VillagePermission;
 import com.rainchat.villages.managers.VillageManager;
 import com.rainchat.villages.menus.PanelMenu;
 import com.rainchat.villages.utilities.general.Chat;
@@ -29,7 +29,7 @@ public class PanelCommand extends Command {
         Village village = villageManager.getVillage(player);
         if (village != null) {
             VillageMember villageMember = village.getMember(player.getUniqueId());
-            if (villageMember.hasPermission(VillagePermission.PANEL) || village.getOwner().equals(player.getUniqueId()) || village.hasPermission(VillagePermission.PANEL)) {
+            if (villageManager.checkPermission(VillagePermission.PANEL, village, villageMember.getUniqueId())) {
                 new PanelMenu(villages, villageManager, village).build().open(player);
             } else {
                 player.sendMessage(Chat.format(Message.NO_PERMISSION.toString().replace("{0}", VillagePermission.PANEL.name())));

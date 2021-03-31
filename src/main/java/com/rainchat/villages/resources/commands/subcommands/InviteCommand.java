@@ -1,8 +1,8 @@
 package com.rainchat.villages.resources.commands.subcommands;
 
+import com.rainchat.villages.data.enums.VillagePermission;
 import com.rainchat.villages.data.village.Village;
 import com.rainchat.villages.data.village.VillageMember;
-import com.rainchat.villages.data.village.VillagePermission;
 import com.rainchat.villages.data.village.VillageRequest;
 import com.rainchat.villages.managers.VillageManager;
 import com.rainchat.villages.utilities.general.Chat;
@@ -28,7 +28,7 @@ public class InviteCommand extends Command {
             Village village = villageManager.getVillage(player);
             if (village != null) {
                 VillageMember villageMember = village.getMember(player.getUniqueId());
-                if (villageMember.hasPermission(VillagePermission.INVITE_MEMBER) || village.getOwner().equals(player.getUniqueId()) || village.hasPermission(VillagePermission.INVITE_MEMBER)) {
+                if (villageManager.checkPermission(VillagePermission.INVITE_MEMBER, village, villageMember.getUniqueId())) {
                     VillageRequest villageRequest = villageManager.getRequest(player);
                     if (villageRequest == null) {
                         Player target = Bukkit.getPlayer(args[1]);
@@ -38,7 +38,7 @@ public class InviteCommand extends Command {
                                 if (targetVillage == null) {
                                     villageRequest = new VillageRequest(village, player.getUniqueId(), target.getUniqueId(), VillageRequest.VillageRequestAction.INVITE);
                                     villageRequest.send();
-                                    villageManager.addP(villageRequest, target);
+                                    villageManager.addPlayer(villageRequest, target);
                                 } else {
                                     player.sendMessage(Chat.format(Message.REQUEST_INVITE_TARGET_NOT_NULL.toString().replace("{0}", target.getDisplayName())));
                                 }

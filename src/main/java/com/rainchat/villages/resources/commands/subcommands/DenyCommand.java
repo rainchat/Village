@@ -25,7 +25,7 @@ public class DenyCommand extends Command {
             player.sendMessage(Chat.format(Message.REQUEST_NULL.toString()));
         } else {
             player.sendMessage(Chat.format(Message.REQUEST_DENIED.toString()));
-            villageManager.removeP(player);
+            villageManager.removePlayer(player);
         }
         return false;
     }

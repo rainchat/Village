@@ -18,16 +18,12 @@ public abstract class Command implements CommandExecutor {
 
     public boolean onCommand(CommandSender commandSender, org.bukkit.command.Command command, String s, String[] strings) {
         if (command.getLabel().equalsIgnoreCase(name)) {
-            try {
-                return run((Player) commandSender, strings);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            return run((Player) commandSender, strings);
         }
         return false;
     }
 
-    public abstract boolean run(Player player, String[] args) throws IOException;
+    public abstract boolean run(Player player, String[] args);
 
     public abstract List<String> tabRun(Player player, String[] args);
 

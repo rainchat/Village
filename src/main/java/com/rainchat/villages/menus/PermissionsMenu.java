@@ -1,52 +1,53 @@
 package com.rainchat.villages.menus;
 
+import com.rainchat.villages.data.enums.VillagePermission;
 import com.rainchat.villages.data.village.Village;
-import com.rainchat.villages.data.village.VillageMember;
-import com.rainchat.villages.data.village.VillagePermission;
+import com.rainchat.villages.data.village.VillageRole;
 import com.rainchat.villages.managers.VillageManager;
 import com.rainchat.villages.utilities.general.Item;
 import com.rainchat.villages.utilities.general.Message;
 import com.rainchat.villages.utilities.menus.Menu;
 import com.rainchat.villages.utilities.menus.MenuItem;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
-import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class PermissionsMenu extends Menu {
 
     private final Village village;
     private final VillageManager villageManager;
-    private final VillageMember villageMember;
+    private final VillageRole villageRole;
 
-    PermissionsMenu(Plugin plugin, Village village, VillageManager villageManager, VillageMember villageMember) {
-        super(plugin, Bukkit.getOfflinePlayer(villageMember.getUniqueId()).getName() + "'s Permissions", 36);
+    PermissionsMenu(Plugin plugin, Village village, VillageManager villageManager, VillageRole villageRole) {
+        super(plugin, villageRole.getName() + "'s Permissions", 36);
         this.village = village;
         this.villageManager = villageManager;
-        this.villageMember = villageMember;
+        this.villageRole = villageRole;
     }
 
     @Override
     public Menu build() {
         AtomicInteger atomicInteger = new AtomicInteger(-1);
-        Arrays.asList(VillagePermission.values()).forEach(villagePermission -> addItems(new MenuItem(atomicInteger.addAndGet(1),
-                permission(villagePermission, villageMember.hasPermission(villagePermission)),
-                event -> {
-                    if (villageMember.hasPermission(villagePermission)) {
-                        villageMember.remove(villagePermission);
-                    } else {
-                        villageMember.add(villagePermission);
-                    }
-                })
-        ));
+
+        for (VillagePermission villagePermission : VillagePermission.values()) {
+            addItems(new MenuItem(atomicInteger.addAndGet(1),
+                    permission(villagePermission, villageRole.hasPermission(villagePermission)),
+                    event -> {
+                        if (villageRole.hasPermission(villagePermission)) {
+                            villageRole.remove(villagePermission);
+                        } else {
+                            villageRole.add(villagePermission);
+                        }
+                    }));
+        }
+
         addItems(new MenuItem(31, back(), inventoryClickEvent ->
         {
             inventoryClickEvent.getWhoClicked().closeInventory();
-            new MembersMenu(getPlugin(), villageManager, village, 1).build().open((Player) inventoryClickEvent.getWhoClicked());
+            new RoleMenu(getPlugin(), village, villageManager).build().open((Player) inventoryClickEvent.getWhoClicked());
         }));
         return this;
     }

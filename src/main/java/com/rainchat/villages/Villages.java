@@ -55,13 +55,16 @@ public class Villages extends JavaPlugin {
         VillageCommand villageCommand = new VillageCommand(this);
         villageCommand.initialise(
                 new AcceptCommand(villageManager),
+                new AdminCommands(villageManager),
                 new ClaimCommand(this),
+                new CheckCommand(this),
                 new CreateCommand(this),
                 new DenyCommand(villageManager),
                 new DisbandCommand(villageManager),
                 new HelpCommand(villageCommand),
                 new HomeCommand(this),
                 new InviteCommand(villageManager),
+                new ClaimListCommand(villageManager),
                 new KickCommand(villageManager),
                 new LeaveCommand(villageManager),
                 new PanelCommand(this),
@@ -69,8 +72,7 @@ public class Villages extends JavaPlugin {
                 new SetDescriptionCommand(villageManager),
                 new SetHomeCommand(villageManager),
                 new SetOwnerCommand(villageManager),
-                new UnClaimCommand(villageManager),
-                new UnActive(villageManager)
+                new UnClaimCommand(villageManager)
         );
 
         getLogger().info("Registered " + villageCommand.getCommands().size() + " sub-command(s).");

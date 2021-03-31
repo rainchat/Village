@@ -1,5 +1,6 @@
 package com.rainchat.villages.data.village;
 
+import com.rainchat.villages.managers.FileManager;
 import com.rainchat.villages.managers.VillageManager;
 import com.rainchat.villages.utilities.general.Chat;
 import com.rainchat.villages.utilities.general.Message;
@@ -82,11 +83,7 @@ public class VillageRequest {
                 if (player != null) {
                     player.sendMessage(Chat.format(Message.REQUEST_JOIN_TARGET.toString().replace("{0}", village.getName())));
                     VillageMember villageMember = new VillageMember(player.getUniqueId());
-                    villageMember.add(VillagePermission.BLOCK_BREAK);
-                    villageMember.add(VillagePermission.BLOCK_PLACE);
-                    villageMember.add(VillagePermission.WATER_PLACEMENT);
-                    villageMember.add(VillagePermission.FURNACE_ACCESS);
-                    villageMember.add(VillagePermission.HOME);
+                    villageMember.setRole(FileManager.Files.ROLES.getFile().getString("Settings.defaultRole", "null"));
                     village.add(villageMember);
                 }
             }

@@ -1,20 +1,23 @@
 package com.rainchat.villages.data.village;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.UUID;
 
 public class VillageMember {
 
     private long cooldown = 0;
     private final UUID uuid;
-    private final List<VillagePermission> villagePermissions;
+
+    private String role;
 
     public VillageMember(UUID uuid) {
         this.uuid = uuid;
-        this.villagePermissions = new ArrayList<>();
     }
+
+
+    public String getRole() {
+        return role;
+    }
+
 
     public void setCooldown(long time) {
         this.cooldown = System.currentTimeMillis() + (time * 1000);
@@ -28,20 +31,8 @@ public class VillageMember {
         return cooldown;
     }
 
-    public void add(VillagePermission villagePermission) {
-        this.villagePermissions.add(villagePermission);
-    }
-
-    public void remove(VillagePermission villagePermission) {
-        this.villagePermissions.remove(villagePermission);
-    }
-
-    public boolean hasPermission(VillagePermission villagePermission) {
-        return villagePermissions.contains(villagePermission);
-    }
-
-    public List<VillagePermission> getPermissions() {
-        return Collections.unmodifiableList(villagePermissions);
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public UUID getUniqueId() {

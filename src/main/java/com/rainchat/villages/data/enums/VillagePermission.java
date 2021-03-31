@@ -1,4 +1,4 @@
-package com.rainchat.villages.data.village;
+package com.rainchat.villages.data.enums;
 
 public enum VillagePermission {
     ANVIL_ACCESS,

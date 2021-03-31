@@ -1,5 +1,6 @@
 package com.rainchat.villages.utilities.general;
 
+import com.rainchat.villages.managers.FileManager;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.Arrays;
@@ -27,13 +28,18 @@ public enum Message {
     MENU_HOME_LORE("Menu.home.lore", Collections.singletonList("&7Teleport to village home.")),
     MENU_INFORMATION_TITLE("Menu.information.title", "&e&lInformation"),
     MENU_INFORMATION_LORE("Menu.information.lore", Arrays.asList(
-            "&7&o{description}",
+            "&7&o%village_target_name%",
             "",
-            "&7Owner: &b{owner}",
-            "&7Level: &a{level}",
-            "&7Members: &e{members}",
-            "&7Claims: &c{claims}"
+            "&7Owner: &b%target_owner%",
+            "&7Members: &e%target_members%",
+            "&7Claims: &c%target_claims%"
     )),
+    MENU_ROLES_TITLE("Menu.member-role.title", "&2&l{role}"),
+    MENU_ROLES_LORE("Menu.member-role.title", Collections.singletonList("&aClick to change permissions")),
+    MENU_MEMBER_ROLE_LORE("Menu.member-role.title", "&a&l{role}"),
+    MENU_MEMBER_ROLE_TITLE("Menu.member-role.lore", Collections.singletonList("&7Click to give the player a role")),
+    MENU_ROLES_MENU_TITLE("Menu.roles-menu.title", "&2&lRole Menu"),
+    MENU_ROLES_MENU_LORE("Menu.roles-menu.lore", Collections.singletonList("&7Click to configure roles.")),
     MENU_MEMBER_TITLE("Menu.member.title", "&a{0}"),
     MENU_MEMBER_LORE("Menu.member.lore", Collections.singletonList("&7Click to edit member.")),
     MENU_MEMBERS_TITLE("Menu.members.title", "&a&lMembers"),
@@ -53,6 +59,7 @@ public enum Message {
     PAGE_LIMIT("Messages.page-limit", "There are only &b{0} &7help pages."),
     PAGE_NEXT("Messages.page-next", "Type &b/villages help {0} &7for the next page."),
     PAGE_PREVIOUS("Messages.page-previous", "Type &b/villages help {0} &7for the previous page."),
+    CLAIM_PAGE("Messages.claim-page", "&7========= &e&lClaim: &7[{0}/{1}] &7========="),
     PLAYER_OFFLINE("Messages.player-offline", "The player &b{0} &7does not seem to be online."),
     PREFIX("Messages.prefix", "&e&lVillages: &7"),
     REQUEST_ACCEPT("Messages.request-accept", "&a[Accept]"),
@@ -76,6 +83,16 @@ public enum Message {
     TITLE_WILDERNESS_FOOTER("Title.wilderness-footer", "&7Fresh new land awaits you."),
     TOOLTIP("Messages.tooltip", "&7Click to select."),
     USAGE("Messages.usage", "Usage: &b{0}"),
+    VILLAGE_INFO("Messages.info-village",  Arrays.asList(
+            "&7&o%village_target_name%",
+            "",
+            "&7Owner: &b%target_owner%",
+            "&7Members: &e%target_members%",
+            "&7Claims: &c%target_claims%"
+    )),
+    VILLAGE_NULL_CHECK("Messages.info-village-null", "&eNo village was found on this chunk!"),
+    VILLAGE_NO_EXISTS("Messages.village-no-exists", "A village named &b%arg_2% &7does not exist."),
+    VILLAGE_ADMIN_UNCLAIM_ONE("Messages.village-admin-unclaim-one", "'&7You can''t unclaim because this village have only one land.'"),
     VILLAGE_ADMIN_ENABLED("Messages.village-admin-enabled", "Admin mode: &aenabled"),
     VILLAGE_ADMIN_NULL("Messages.village-admin-null", "No village exists at your current location."),
     VILLAGE_ADMIN_UNCLAIM("Messages.village-admin-unclaim", "Successfully unclaimed land at &b{0} &7from &b{1}&7."),
@@ -110,9 +127,35 @@ public enum Message {
     WORLDGUARD_CREATE("Messages.world-guard", "You create land in a worldguard region."),
     WORLD_NOT_ENABLED("Messages.world-not-enabled", "Villages is not enabled in this world.");
 
-    private String path, def;
+    private final String path;
+    private String def;
     private List<String> list;
     private static FileConfiguration configuration;
+
+    public static int addMissingMessages(String name) {
+        FileConfiguration file = FileManager.getInstance().getFile(name).getFile();
+        int index = 0;
+
+        boolean saveFile = false;
+        for (Message message : values()) {
+            index++;
+            if (!file.contains(message.getPath())) {
+                saveFile = true;
+                if (message.getDefaultMessage() != null) {
+                    file.set(message.getPath(), message.getDefaultMessage());
+                } else {
+                    file.set(message.getPath(), message.getDefaultListMessage());
+                }
+            }
+        }
+        if (saveFile) {
+            FileManager.getInstance().saveFile(name);
+        }
+
+
+
+        return index;
+    }
 
     Message(String path, String def) {
         this.path = path;
@@ -128,10 +171,55 @@ public enum Message {
         return configuration.getString(path, def);
     }
 
+    public static String convertList(List<String> list) {
+        String message = "";
+        for (String line : list) {
+            message += line + "\n";
+        }
+        return message;
+    }
+
     @Override
     public String toString() {
-        return Chat.color(configuration.getString(path, def));
+        String message;
+        boolean isList = isList();
+        boolean exists = exists();
+        if (isList) {
+            if (exists) {
+                message = convertList(configuration.getStringList(path));
+            } else {
+                message = convertList(getDefaultListMessage());
+            }
+        } else {
+            if (exists) {
+                message = configuration.getString(path);
+            } else {
+                message = getDefaultMessage();
+            }
+        }
+
+        return Color.parseHexString(message);
     }
+
+    public String getMessage() {
+        return Color.parseHexString(configuration.getString(path, def));
+    }
+
+
+    private boolean exists() {
+        return configuration.contains(path);
+    }
+
+    private boolean isList() {
+        if (configuration.contains(path)) {
+            return !configuration.getStringList(path).isEmpty();
+        } else {
+            return def == null;
+        }
+    }
+
+
+
 
     public List<String> toList() {
         return configuration.getStringList(path);
@@ -149,5 +237,11 @@ public enum Message {
         return list;
     }
 
+    private String getDefaultMessage() {
+        return def;
+    }
 
+    private List<String> getDefaultListMessage() {
+        return list;
+    }
 }

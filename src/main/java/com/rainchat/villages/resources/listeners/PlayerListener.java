@@ -1,8 +1,8 @@
 package com.rainchat.villages.resources.listeners;
 
 import com.rainchat.villages.Villages;
+import com.rainchat.villages.data.enums.VillagePermission;
 import com.rainchat.villages.data.village.Village;
-import com.rainchat.villages.data.village.VillagePermission;
 import com.rainchat.villages.managers.VillageManager;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -26,7 +26,9 @@ public class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
     public void onInteract(PlayerInteractEvent event) {
         Player player = event.getPlayer();
+
         if (player.isOp()) return;
+        if (villageManager.hasAdminMode(player.getUniqueId())) return;
 
         Block block = event.getClickedBlock();
         if (block == null) return;

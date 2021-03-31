@@ -2,20 +2,22 @@ package com.rainchat.villages.resources.commands.subcommands;
 
 import com.rainchat.villages.Villages;
 import com.rainchat.villages.data.enums.ParticleTip;
+import com.rainchat.villages.data.enums.VillageGlobalPermission;
+import com.rainchat.villages.data.enums.VillagePermission;
 import com.rainchat.villages.data.village.Village;
 import com.rainchat.villages.data.village.VillageClaim;
 import com.rainchat.villages.data.village.VillageMember;
-import com.rainchat.villages.data.village.VillagePermission;
+import com.rainchat.villages.data.village.VillageRole;
 import com.rainchat.villages.hooks.WorldGuardHook;
+import com.rainchat.villages.managers.FileManager;
 import com.rainchat.villages.managers.VillageManager;
-import com.rainchat.villages.utilities.general.Chat;
-import com.rainchat.villages.utilities.general.Command;
-import com.rainchat.villages.utilities.general.Message;
-import com.rainchat.villages.utilities.general.ParticleSpawn;
+import com.rainchat.villages.utilities.general.*;
 import org.bukkit.Chunk;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 import java.util.List;
+import java.util.logging.Level;
 
 public class CreateCommand extends Command {
 
@@ -33,6 +35,7 @@ public class CreateCommand extends Command {
         if (args.length == 2) {
             Village village = villageManager.getVillage(player);
             if (village == null) {
+
                 if (args[1].length() > 32) {
                     player.sendMessage(Chat.format(Message.VILLAGE_CREATE_LIMIT.toString()));
                     return true;
@@ -52,19 +55,42 @@ public class CreateCommand extends Command {
                                 return true;
                             }
                         }
+
                         village = new Village(args[1], "A peaceful settlement.", player.getUniqueId());
+
+                        // villages roles add
+                        FileConfiguration rolesFile = FileManager.Files.ROLES.getFile();
+                        for (String path : rolesFile.getConfigurationSection("VillageRoles").getKeys(false)) {
+                            VillageRole role = new VillageRole(path);
+                            for (String permission : rolesFile.getStringList("VillageRoles." + path + ".permissions")) {
+                                try {
+                                    role.add(VillagePermission.valueOf(permission.toUpperCase()));
+                                } catch (Exception ex) {
+                                    ServerLog.log(Level.WARNING, "Exception Thrown " + ex);
+                                }
+                            }
+                            village.addRole(role);
+                        }
+                        // villages add global flags
+
+                            for (String permission : rolesFile.getStringList("VillageGlobalFlags")) {
+                                try {
+                                    village.add(VillageGlobalPermission.valueOf(permission));
+                                } catch (Exception ex) {
+                                    ServerLog.log(Level.WARNING, "Exception Thrown " + ex);
+                                }
+                            }
+
+
+
+                        // villages clim add
+
                         village.add(new VillageClaim(chunk.getWorld().getName(), chunk.getX(), chunk.getZ()));
-                        village.add(new VillageMember(player.getUniqueId()));
+                        VillageMember villageMember = new VillageMember(player.getUniqueId());
+                        villageMember.setRole(rolesFile.getString("Settings.ownerRole", "null"));
+                        village.add(villageMember);
 
-                        village.add(VillagePermission.CHEST_ACCESS);
-                        village.add(VillagePermission.WATER_PLACEMENT);
-                        village.add(VillagePermission.LAVA_PLACEMENT);
-                        village.add(VillagePermission.BLOCK_BREAK);
-                        village.add(VillagePermission.BLOCK_PLACE);
-                        village.add(VillagePermission.FURNACE_ACCESS);
-                        village.add(VillagePermission.SHULKER_ACCESS);
-                        village.add(VillagePermission.HOME);
-
+                        // set home villages
                         village.setLocation(player.getLocation());
 
                         villageManager.add(village);
