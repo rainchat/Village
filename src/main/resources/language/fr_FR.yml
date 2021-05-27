@@ -1,0 +1,88 @@
+Messages:
+  prefix: '&e&lVillages: &7'
+  disband: '&7Oh non ! &a&l{0} &7est tombé en ruines...'
+  help: Type /villages help [page] &7pour consulter les pages d'aide.
+  reload: '&ales configurations ont été rechargées avec succès.'
+  no-command-permission: Vous n'avez pas la permission pour faire cette commande.
+  no-permission: 'Vous n''avez pas la permission : &b{0}&7.'
+  player-offline: Le joueur &b{0} &7est hors ligne.
+  page-format: '&b{0}. &7{1}'
+  page-help: '&e&lAide: &7[{0}/{1}]'
+  page-limit: Il y a seulement &b{0} &7pages d'aide.
+  page-next: Type &b/villages help {0} &7pour la page suivante.
+  page-previous: Type &b/villages help {0} &7pour la page précédente.
+  claim-page: '&7========= &e&lClaim: &7[{0}/{1}] &7========='
+  request-accept: '&a[Accepter]'
+  request-deny: '&c[Refuser]'
+  request-denied: Vous avez décidé de refuser la demande.
+  request-disband: Voulez-vous vraiment détruire votre village ? Les membres seront déçu !
+  request-invite: Vous avez envoyé une demande d’invitation à &b{0}&7.
+  request-invite-self: Tu ne peux pas t'inviter.
+  request-invite-target: Vous avez été invité à rejoindre &b{0}&7. Souhaitez-vous rejoindre?
+  request-invite-target-not-null: Le joueur &b{0} &7appartient déjà à un village.
+  request-join: '&b{0} &7a rejoint le village.'
+  request-join-target: '&7Vous avez rejoint le village &b{0}&7.'
+  request-kick: Etes-vous sûr de vouloir de kick &b{0} &7de voter village ?
+  request-kick-self: Vous ne pouvez pas vous expulser du village.
+  request-kick-target: Vous avez été expulsé du village &b{0}&7.
+  request-null: Vous n'avez aucune demande en attente.
+  request-pending: Vous avez déjà une demande en attente.
+  tooltip: '&7Cliquez pour sélectionner.'
+  usage: 'Usage: &b{0}'
+  info-village:
+    - '&7&o%village_target_name%'
+    - ''
+    - '&7Maire: &b%target_owner%'
+    - '&7Citoyens: &e%target_members%'
+    - '&7Claims: &c%target_claims%'
+  info-village-null: '&eAucun village n''a été trouvé sur ce chunk !'
+  village-no-exists: Un village nommé &b%arg_2% &7n'existe pas.
+  village-admin-unclaim-one: '''&7Vous ne pouvez pas annuler votre demande car ce village a que une terre.'''
+  village-admin-enabled: 'Admin mode: &aActivé'
+  village-admin-null: Aucun village n'existe à votre emplacement actuel.
+  village-admin-unclaim: Terrain unclaim avec succès à &b{0} &7de &b{1}&7.
+  village-admin-disabled: 'Admin mode: &cdésactivé'
+  village-already-owner: Vous ne pouvez pas définir le nouveau propriétaire par vous-même.
+  village-claim: 'Vous avez réclamé de nouvelles terres pour votre village: &b{0}'
+  village-claim-owned: La terre que vous essayez de sécuriser appartient déjà à votre village.
+  village-claim-other: La terre que vous essayez de sécuriser appartient à un autre village.
+  village-teleport: 'Vous avez été téléporté pour réclamer: &b{0}&7'
+  village-cooldown: Vous pouvez à nouveau vous téléporter au village dans &b{0} &7secondes.
+  village-create: Vous avez créé un village nommé &b{0}&7.
+  village-create-other: Le nom de votre village ne peut pas dépasser &b32 &7caractères.
+  village-description-limit: La description de votre village ne peut pas dépasser
+    &b32&7 caractères.
+  village-exists: Un village nommé &b{0} &7éxiste déjà.
+  village-home: Vous avez été téléporté à la mairie de votre village.
+  village-leave: Vous avez quitté le village &b{0}&7.
+  village-leave-owner: Vous ne pouvez pas quitter votre village actuel car vous en êtes le propriétaire.
+  village-max-claims: Vous ne pouvez pas claim plus de &b{0} &7chunks pour votre village.
+  village-member-null: '&b{0} &7ne semble pas appartenir à votre village.'
+  village-not-null: Tu appartiens déjà à un village.
+  village-null: Vous n'appartenez pas à un village.
+  village-owner: Vous devez être le propriétaire du village pour faire cette action.
+  village-rename: 'Vous avez renommé le village en : &b{0}'
+  village-set-description: 'Vous avez défini la description du village : &b{0}'
+  village-set-home: Vous avez défini le point de télépotation de la mairie.
+  village-set-owner: Vous avez défini le nouveau propriétaire du village &b{0}&7.
+  village-unclaim: Vous avez unclaim un terrain de votre village.
+  village-unclaim-one: Vous ne pouvez pas unclaim car votre village ne possède qu'une seule terre.
+  village-unclaim-other: Le terrain n'appartient pas à votre village.
+  village-sub-claim-null: '&7Les points sélectionnés ne sont pas dans le village'
+  village-sub-claim-cut: '&7les sub-claim ne peuvent pas &7être chevaucher'
+  village-sub-claim-name: '&7Le nom du &esubclaim &7doit être unique'
+  village-sub-claim-name-null: '&7Il n''y a pas de &esubclaim &7avec ce nom.'
+  village-sub-claim-unselected: '&7Les positions du &esubclaim &7n''est pas sélectionnés'
+  village-sub-claim-remove: '&7Subclaim &e%subclaim_name% &7supprimé avec succès '
+  village-sub-claim-add-member: '&7Le joueur a été ajouté avec succès au sub-claim.'
+  village-sub-claim: Vous avez claim une nouvelle sub-claim avec un nom &b%subclaim_name%
+  world-guard: Vous ne pouvez pas claim ici.
+  world-not-enabled: Les villages ne sont pas activés dans ce monde.
+Title:
+  header: '&e&l{0}!'
+  footer: '&7Bienvenue à &b{0} &7village.'
+  wilderness-header: '&a&lRégion sauvage!'
+  wilderness-footer: '&7De nouvelles terres fraîches.'
+Economy:
+  create-village: '&7Vous n''avez pas assez d''argent pour créer un &evillage &8(Besoin: &c%econ_need%&8)'
+  claim-village: '&7Vous n''avez pas assez d''argent pour claim (Besoin: &c%econ_need%&8)'

@@ -41,7 +41,7 @@ public class PlayerListener implements Listener {
         Material material = block.getType();
         if (material == Material.FURNACE) {
             if (playerVillage == currentVillage) {
-                if (villageManager.checkPermission(VillagePermission.FURNACE_ACCESS, playerVillage, player))
+                if (villageManager.hasPermission(VillagePermission.FURNACE_ACCESS, playerVillage, player, block.getLocation()))
                     event.setCancelled(true);
             } else {
                 event.setCancelled(true);
@@ -50,7 +50,7 @@ public class PlayerListener implements Listener {
 
         if (material == Material.BARREL) {
             if (playerVillage == currentVillage) {
-                if (villageManager.checkPermission(VillagePermission.BARREL_ACCESS, playerVillage, player))
+                if (villageManager.hasPermission(VillagePermission.BARREL_ACCESS, playerVillage, player, block.getLocation()))
                     event.setCancelled(true);
             } else {
                 event.setCancelled(true);
@@ -59,7 +59,7 @@ public class PlayerListener implements Listener {
 
         if (material == Material.SHULKER_BOX) {
             if (playerVillage == currentVillage) {
-                if (villageManager.checkPermission(VillagePermission.SHULKER_ACCESS, playerVillage, player))
+                if (villageManager.hasPermission(VillagePermission.SHULKER_ACCESS, playerVillage, player, block.getLocation()))
                     event.setCancelled(true);
             } else {
                 event.setCancelled(true);
@@ -68,7 +68,7 @@ public class PlayerListener implements Listener {
 
         if (material == Material.CHEST || material == Material.TRAPPED_CHEST) {
             if (playerVillage == currentVillage) {
-                if (villageManager.checkPermission(VillagePermission.CHEST_ACCESS, playerVillage, player))
+                if (villageManager.hasPermission(VillagePermission.CHEST_ACCESS, playerVillage, player, block.getLocation()))
                     event.setCancelled(true);
             } else {
                 event.setCancelled(true);
@@ -77,7 +77,7 @@ public class PlayerListener implements Listener {
 
         if (material == Material.HOPPER || material == Material.DISPENSER || material == Material.DROPPER) {
             if (playerVillage == currentVillage) {
-                if (villageManager.checkPermission(VillagePermission.RESTONE_INVENTORY_ACCESS, playerVillage, player))
+                if (villageManager.hasPermission(VillagePermission.RESTONE_INVENTORY_ACCESS, playerVillage, player, block.getLocation()))
                     event.setCancelled(true);
             } else {
                 event.setCancelled(true);
@@ -86,7 +86,7 @@ public class PlayerListener implements Listener {
 
         if (material == Material.BREWING_STAND) {
             if (playerVillage == currentVillage) {
-                if (villageManager.checkPermission(VillagePermission.BREWING_ACCESS, playerVillage, player))
+                if (villageManager.hasPermission(VillagePermission.BREWING_ACCESS, playerVillage, player, block.getLocation()))
                     event.setCancelled(true);
             } else {
                 event.setCancelled(true);
@@ -95,7 +95,7 @@ public class PlayerListener implements Listener {
 
         if (material == Material.ANVIL || material == Material.CHIPPED_ANVIL || material == Material.DAMAGED_ANVIL) {
             if (playerVillage == currentVillage) {
-                if (villageManager.checkPermission(VillagePermission.ANVIL_ACCESS, playerVillage, player))
+                if (villageManager.hasPermission(VillagePermission.ANVIL_ACCESS, playerVillage, player, block.getLocation()))
                     event.setCancelled(true);
             } else {
                 event.setCancelled(true);
@@ -104,7 +104,7 @@ public class PlayerListener implements Listener {
 
         if (material == Material.DRAGON_EGG) {
             if (playerVillage == currentVillage) {
-                if (villageManager.checkPermission(VillagePermission.DRAGON_EGG_TOUCH, playerVillage, player))
+                if (villageManager.hasPermission(VillagePermission.DRAGON_EGG_TOUCH, playerVillage, player, block.getLocation()))
                     event.setCancelled(true);
             } else {
                 event.setCancelled(true);
@@ -126,7 +126,7 @@ public class PlayerListener implements Listener {
         Material material = event.getBucket();
         if (material == Material.WATER_BUCKET || material == Material.PUFFERFISH_BUCKET || material == Material.TROPICAL_FISH_BUCKET || material == Material.SALMON_BUCKET) {
             if (playerVillage == currentVillage) {
-                if (villageManager.checkPermission(VillagePermission.WATER_PLACEMENT, playerVillage, player))
+                if (villageManager.hasPermission(VillagePermission.WATER_PLACEMENT, playerVillage, player, block.getLocation()))
                     event.setCancelled(true);
             } else {
                 event.setCancelled(true);
@@ -135,7 +135,7 @@ public class PlayerListener implements Listener {
 
         if (material == Material.LAVA_BUCKET) {
             if (playerVillage == currentVillage) {
-                if (villageManager.checkPermission(VillagePermission.LAVA_PLACEMENT, playerVillage, player))
+                if (villageManager.hasPermission(VillagePermission.LAVA_PLACEMENT, playerVillage, player, block.getLocation()))
                     event.setCancelled(true);
             } else {
                 event.setCancelled(true);
@@ -154,7 +154,7 @@ public class PlayerListener implements Listener {
         Village playerVillage = villageManager.getVillage(player);
 
         if (playerVillage == currentVillage) {
-            if (villageManager.checkPermission(VillagePermission.ARMOR_STAND_ACCESS, playerVillage, player))
+            if (villageManager.hasPermission(VillagePermission.ARMOR_STAND_ACCESS, playerVillage, player, armorStand.getLocation()))
                 event.setCancelled(true);
         } else {
             event.setCancelled(true);

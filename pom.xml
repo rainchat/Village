@@ -6,7 +6,7 @@
 
     <groupId>com.rainchat.</groupId>
     <artifactId>Villages</artifactId>
-    <version>1.4.0</version>
+    <version>1.5.4.9</version>
     <packaging>jar</packaging>
 
     <name>Villages</name>
@@ -27,6 +27,7 @@
                     <source>${java.version}</source>
                     <target>${java.version}</target>
                 </configuration>
+
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -39,8 +40,38 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
-                            <createDependencyReducedPom>false</createDependencyReducedPom>
+                            <relocations>
+                                <relocation>
+                                    <pattern>co.aikar.commands</pattern>
+                                    <shadedPattern>com.rainchat.villages.acf</shadedPattern> <!-- Replace this -->
+                                </relocation>
+                                <relocation>
+                                    <pattern>co.aikar.locales</pattern>
+                                    <shadedPattern>com.rainchat.villages.locales</shadedPattern> <!-- Replace this -->
+                                </relocation>
+                            </relocations>
                         </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.1.0</version>
+                <configuration>
+                    <relocations>
+                        <relocation>
+                            <pattern>org.bstats</pattern>
+                            <shadedPattern>com.rainchat.villages.util</shadedPattern>
+                        </relocation>
+                    </relocations>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
                     </execution>
                 </executions>
             </plugin>
@@ -55,8 +86,8 @@
 
     <repositories>
         <repository>
-            <id>papermc-repo</id>
-            <url>https://papermc.io/repo/repository/maven-public/</url>
+            <id>spigot-repo</id>
+            <url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
         </repository>
         <repository>
             <id>sonatype</id>
@@ -72,25 +103,43 @@
             <id>sk89q-repo</id>
             <url>https://maven.sk89q.com/repo/</url>
         </repository>
-        <!--MineDown repo-->
         <repository>
-            <id>dmulloy2-repo</id>
-            <url>https://repo.dmulloy2.net/nexus/repository/public/</url>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+        <repository>
+            <id>aikar</id>
+            <url>https://repo.aikar.co/content/groups/aikar/</url>
         </repository>
     </repositories>
 
     <dependencies>
+        <!-- Spigot as an example -->
         <dependency>
-            <groupId>com.destroystokyo.paper</groupId>
-            <artifactId>paper-api</artifactId>
-            <version>1.16.4-R0.1-SNAPSHOT</version>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot-api</artifactId>
+            <version>LATEST</version>
             <scope>provided</scope>
+        </dependency>
+        <!-- bStats -->
+        <dependency>
+            <groupId>org.bstats</groupId>
+            <artifactId>bstats-bukkit</artifactId>
+            <version>2.2.1</version>
+            <scope>compile</scope>
         </dependency>
         <!--PlaceholderAPI dependency-->
         <dependency>
             <groupId>me.clip</groupId>
             <artifactId>placeholderapi</artifactId>
             <version>2.10.9</version>
+            <scope>provided</scope>
+        </dependency>
+        <!--Vault dependency-->
+        <dependency>
+            <groupId>com.github.MilkBowl</groupId>
+            <artifactId>VaultAPI</artifactId>
+            <version>1.7</version>
             <scope>provided</scope>
         </dependency>
         <!--WorldGuard/WorldEdit dependency-->
@@ -100,12 +149,25 @@
             <version>7.0.0</version>
             <scope>provided</scope>
         </dependency>
-        <!--MineDown dependency-->
+        <!--InventoryAPI dependency-->
         <dependency>
-            <groupId>de.themoep</groupId>
-            <artifactId>minedown</artifactId>
-            <version>1.7.0-SNAPSHOT</version>
+            <groupId>com.github.rainchat</groupId>
+            <artifactId>InventoryAPI</artifactId>
             <scope>compile</scope>
+            <version>1.1</version>
+        </dependency>
+        <!--RainLib dependency-->
+        <dependency>
+            <groupId>com.github.rainchat</groupId>
+            <artifactId>RainLib</artifactId>
+            <scope>compile</scope>
+            <version>1.2</version>
+        </dependency>
+        <!--aikar-command dependency-->
+        <dependency>
+            <groupId>co.aikar</groupId>
+            <artifactId>acf-paper</artifactId> <!-- Don't forget to replace this -->
+            <version>0.5.0-SNAPSHOT</version> <!-- Replace this as well -->
         </dependency>
     </dependencies>
 </project>

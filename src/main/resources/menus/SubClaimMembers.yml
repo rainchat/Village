@@ -1,0 +1,53 @@
+Menu-settings:
+
+  title: "&0[&aSubRegion members&0]"
+
+  fill-items:
+    material: black_stained_glass_pane
+    name: "&7&l+"
+    madel-date: 11
+
+  pagination-slots: 9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35
+
+  size: 5
+
+
+
+Pagination-items:
+  type: subclaim-menu-members
+  name: "&a%player_name%"
+  material: Book
+  lore:
+    - '&7click to remove'
+  actions:
+    - ""
+
+
+Menu-items:
+
+  page-previous:
+    slot: 39
+    material: Arrow
+    name: "&eprevious page"
+    lore:
+      - "&7click to previous page"
+    actions:
+      - "[previous-page]"
+
+  page-next:
+    slot: 41
+    material: Arrow
+    name: "&enext page"
+    lore:
+      - "&7click to next page"
+    actions:
+      - "[next-page]"
+
+  back:
+    slot: 36
+    material: Barrier
+    name: "&cBack to main menu"
+    lore:
+      - "&7click to go main menu"
+    actions:
+      - "[menu-open]main"

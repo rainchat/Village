@@ -1,13 +1,16 @@
 package com.rainchat.villages.utilities.general;
 
-import com.rainchat.villages.api.placeholder.PlaceholderSupply;
-import de.themoep.minedown.MineDown;
+import com.rainchat.rainlib.placeholder.PlaceholderSupply;
+import com.rainchat.rainlib.utils.Color;
 import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -39,7 +42,7 @@ public class Chat {
         int subtitlePos = text.indexOf("%subtitle%");
         int actionbarPos = text.indexOf("%actionbar%");
         if ((tellrawPos & titlePos & subtitlePos & actionbarPos) == -1) {
-            p.sendMessage(new MineDown(text).toComponent());
+            p.sendMessage(Color.parseHexString(text));
             return;
         }
 
@@ -50,7 +53,7 @@ public class Chat {
                 Math.min(subtitlePos & nb, actionbarPos & nb));
 
         if (matchStart > 0) {
-            p.sendMessage(new MineDown(text.substring(0, matchStart)).toComponent());
+            p.sendMessage(Color.parseHexString(text));
         }
 
         if (player != null) {
@@ -107,7 +110,7 @@ public class Chat {
 
 
     public static void sendActionbar(Player player, String message) {
-        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new MineDown(message).toComponent());
+        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(Color.parseHexString(message)));
     }
 
 
@@ -116,7 +119,7 @@ public class Chat {
     }
 
 
-    private static String translateRaw(String template, Player player, boolean prefixed, PlaceholderSupply<?>... replacementSource) {
+    public static String translateRaw(String template, Player player, boolean prefixed, PlaceholderSupply<?>... replacementSource) {
 
         Matcher m = PH_KEY.matcher(template);
         while (m.find()) {
@@ -136,5 +139,43 @@ public class Chat {
             template = Message.PREFIX.toString() + template;
 
         return template;
+    }
+
+    public static String translateRaw(String template, PlaceholderSupply<?>... replacementSource) {
+        Matcher m = PH_KEY.matcher(template);
+        while (m.find()) {
+            for (PlaceholderSupply<?> e : replacementSource) {
+                String replacement = e.getReplacement(m.group(1));
+                if (replacement != null) {
+                    if (!replacement.isEmpty()) {
+                        template = template.replace(m.group(), replacement);
+                        break;
+                    }
+                }
+            }
+        }
+
+        return Color.parseHexString(template);
+    }
+
+    public static List<String> translateRaw(List<String> list, PlaceholderSupply<?>... replacementSource) {
+        List<String> tempList = new ArrayList<>();
+        for (String template : list) {
+            Matcher m = PH_KEY.matcher(template);
+            while (m.find()) {
+                for (PlaceholderSupply<?> e : replacementSource) {
+                    String replacement = e.getReplacement(m.group(1));
+                    if (replacement != null) {
+                        if (!replacement.isEmpty()) {
+                            template = template.replace(m.group(), replacement);
+                            break;
+                        }
+                    }
+                }
+            }
+            tempList.add(Color.parseHexString(template));
+        }
+
+        return tempList;
     }
 }

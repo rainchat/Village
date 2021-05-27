@@ -1,9 +1,12 @@
 package com.rainchat.villages.api.placeholder.replacer;
 
 
-import com.rainchat.villages.api.placeholder.BaseReplacements;
+import com.rainchat.rainlib.placeholder.BaseReplacements;
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+
+import java.util.UUID;
 
 public class PlayerReplacements extends BaseReplacements<Player> {
     private final OfflinePlayer player;
@@ -15,6 +18,11 @@ public class PlayerReplacements extends BaseReplacements<Player> {
         this.player = player;
     }
 
+    public PlayerReplacements(UUID playerUUID) {
+        super("player_");
+
+        this.player = Bukkit.getOfflinePlayer(playerUUID);
+    }
 
     @Override
     public Class<Player> forClass() {

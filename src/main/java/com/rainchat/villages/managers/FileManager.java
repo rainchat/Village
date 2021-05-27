@@ -13,17 +13,16 @@ import java.util.HashMap;
 
 public class FileManager {
 
-    private static FileManager instance = new FileManager();
+    private static final FileManager instance = new FileManager();
+    private final HashMap<Files, File> files = new HashMap<>();
+    private final ArrayList<String> homeFolders = new ArrayList<>();
+    private final ArrayList<CustomFile> customFiles = new ArrayList<>();
+    private final HashMap<String, String> jarHomeFolders = new HashMap<>();
+    private final HashMap<String, String> autoGenerateFiles = new HashMap<>();
+    private final HashMap<Files, FileConfiguration> configurations = new HashMap<>();
     private Plugin plugin;
     private String prefix = "";
     private boolean log = false;
-    private HashMap<Files, File> files = new HashMap<>();
-    private CustomFile LanguageFile;
-    private ArrayList<String> homeFolders = new ArrayList<>();
-    private ArrayList<CustomFile> customFiles = new ArrayList<>();
-    private HashMap<String, String> jarHomeFolders = new HashMap<>();
-    private HashMap<String, String> autoGenerateFiles = new HashMap<>();
-    private HashMap<Files, FileConfiguration> configurations = new HashMap<>();
 
     public static FileManager getInstance() {
         return instance;
@@ -148,9 +147,6 @@ public class FileManager {
         return this;
     }
 
-    public CustomFile getLanguage() {
-        return LanguageFile;
-    }
 
     /**
      * Unregister a folder that has custom files in it. Make sure to have a "/" in front of the folder name.
@@ -305,12 +301,22 @@ public class FileManager {
         for (CustomFile file : customFiles) {
             file.reloadFile();
         }
-
     }
 
-    public ArrayList<String> getAllItemsCatigory() {
+    public ArrayList<String> getAllItemsCategory() {
         ArrayList<String> files = new ArrayList<>();
         for (String name : new File(plugin.getDataFolder(), "/items").list()) {
+            if (!name.endsWith(".yml")) {
+                continue;
+            }
+            files.add(name.replaceAll(".yml", ""));
+        }
+        return files;
+    }
+
+    public ArrayList<String> getAllCategory(String folder) {
+        ArrayList<String> files = new ArrayList<>();
+        for (String name : new File(plugin.getDataFolder(), "/" + folder).list()) {
             if (!name.endsWith(".yml")) {
                 continue;
             }
@@ -336,12 +342,12 @@ public class FileManager {
 
         //ENUM_NAME("fileName.yml", "fileLocation.yml"),
         //ENUM_NAME("fileName.yml", "newFileLocation.yml", "oldFileLocation.yml"),
-        ROLES("roles.yml", "roles.yml"),
-        CONFIG("config.yml", "config.yml");
+        CONFIG("config.yml", "config.yml"),
+        ROLES("roles.yml", "roles.yml");
 
-        private String fileName;
-        private String fileJar;
-        private String fileLocation;
+        private final String fileName;
+        private final String fileJar;
+        private final String fileLocation;
 
         /**
          * The files that the server will try and load.
@@ -349,7 +355,7 @@ public class FileManager {
          * @param fileName     The file name that will be in the plugin's folder.
          * @param fileLocation The location the file in the plugin's folder.
          */
-        private Files(String fileName, String fileLocation) {
+        Files(String fileName, String fileLocation) {
             this(fileName, fileLocation, fileLocation);
         }
 
@@ -360,7 +366,7 @@ public class FileManager {
          * @param fileLocation The location of the file will be in the plugin's folder.
          * @param fileJar      The location of the file in the jar.
          */
-        private Files(String fileName, String fileLocation, String fileJar) {
+        Files(String fileName, String fileLocation, String fileJar) {
             this.fileName = fileName;
             this.fileLocation = fileLocation;
             this.fileJar = fileJar;
@@ -428,10 +434,10 @@ public class FileManager {
 
     public class CustomFile {
 
-        private String name;
-        private Plugin plugin;
-        private String fileName;
-        private String homeFolder;
+        private final String name;
+        private final Plugin plugin;
+        private final String fileName;
+        private final String homeFolder;
         private FileConfiguration file;
 
         /**

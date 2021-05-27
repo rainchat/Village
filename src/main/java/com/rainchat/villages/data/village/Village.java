@@ -2,22 +2,23 @@ package com.rainchat.villages.data.village;
 
 import com.rainchat.villages.data.enums.VillageGlobalPermission;
 import com.rainchat.villages.data.enums.VillagePermission;
+import org.bukkit.Chunk;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 
 import java.util.*;
 
 public class Village {
 
+    private final Set<VillageMember> villageMembers;
+    private final Set<VillageClaim> villageClaims;
+    private final Set<VillageSubClaim> villageSubClaims;
+    private final Set<VillageGlobalPermission> villagePermissions;
+    private int level;
+    private Set<VillageRole> villageRoles;
     private String name, description;
     private UUID owner;
     private long lastActive;
-
-
-    private final Set<VillageMember> villageMembers;
-    private final Set<VillageClaim> villageClaims;
-    private final Set<VillageRole> villageRoles;
-    private final Set<VillageGlobalPermission> villagePermissions;
-
     private VillageLocation villageLocation;
 
     public Village(String name, String description, UUID owner) {
@@ -28,6 +29,7 @@ public class Village {
 
         this.villageMembers = new HashSet<>();
         this.villageClaims = new HashSet<>();
+        this.villageSubClaims = new HashSet<>();
         this.villagePermissions = new HashSet<>();
         this.villageRoles = new HashSet<>();
         this.lastActive = System.currentTimeMillis();
@@ -54,8 +56,18 @@ public class Village {
         villageClaims.add(villageClaim);
     }
 
+    public void add(VillageSubClaim villageSubClaim) {
+        villageSubClaims.add(villageSubClaim);
+    }
+
     public void add(VillageGlobalPermission villageGlobalPermission) {
         villagePermissions.add(villageGlobalPermission);
+    }
+
+    public void add(Set<VillageGlobalPermission> villageGlobalPermissions) {
+        for (VillageGlobalPermission villageGlobalPermission : villageGlobalPermissions) {
+            villagePermissions.add(villageGlobalPermission);
+        }
     }
 
     public void add(long time) {
@@ -78,22 +90,17 @@ public class Village {
         villageClaims.remove(villageClaim);
     }
 
+    public void remove(VillageSubClaim villageSubClaim) {
+        villageSubClaims.remove(villageSubClaim);
+    }
+
     public void remove(VillageGlobalPermission villageGlobalPermission) {
         villagePermissions.remove(villageGlobalPermission);
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void removeClaim(String id) {
+        villageClaims.removeIf(villageClaim -> villageClaim.toString().equalsIgnoreCase(id));
     }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public void setOwner(UUID owner) {
-        this.owner = owner;
-    }
-
 
     public void setLocation(Location location) {
         this.villageLocation = new VillageLocation(
@@ -144,22 +151,86 @@ public class Village {
         return false;
     }
 
+    public boolean containsChunk(Chunk chunk) {
+        for (VillageClaim villageClaim : villageClaims) {
+            if (villageClaim.contains(chunk)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean containsSubCuboid(String cuboid) {
+        for (VillageSubClaim villageSubClaim : villageSubClaims) {
+            if (villageSubClaim.getName().equalsIgnoreCase(cuboid)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean containsSubCuboid(VillageSubClaim cuboid) {
+        for (VillageSubClaim villageSubClaim : villageSubClaims) {
+            if (villageSubClaim.overlaps(cuboid)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean containsSubCuboid(Location location) {
+        for (VillageSubClaim villageSubClaim : villageSubClaims) {
+            if (villageSubClaim.contains(location)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     public boolean hasPermission(VillageGlobalPermission villageGlobalPermission) {
         return villagePermissions.contains(villageGlobalPermission);
+    }
+
+    public boolean hasPermission(VillageGlobalPermission villageGlobalPermission, Location location) {
+        for (VillageSubClaim villageSubClaim : villageSubClaims) {
+            if (villageSubClaim.contains(location)) {
+                return villageSubClaim.hasPermission(villageGlobalPermission);
+            }
+        }
+        return villagePermissions.contains(villageGlobalPermission);
+    }
+
+    public boolean hasMember(Player player) {
+        for (VillageMember villageMember : villageMembers) {
+            if (villageMember.getUniqueId().equals(player.getUniqueId())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public String getName() {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public String getDescription() {
         return description;
     }
 
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     public UUID getOwner() {
         return owner;
+    }
+
+    public void setOwner(UUID owner) {
+        this.owner = owner;
     }
 
     public Set<VillageMember> getVillageMembers() {
@@ -183,8 +254,25 @@ public class Village {
         return null;
     }
 
+    public VillageSubClaim getSubClaim(String name) {
+        for (VillageSubClaim villageSubClaim : villageSubClaims) {
+            if (villageSubClaim.getName().equals(name)) {
+                return villageSubClaim;
+            }
+        }
+        return null;
+    }
+
+    public Set<VillageSubClaim> getVillageSubRegions() {
+        return villageSubClaims;
+    }
+
     public Set<VillageRole> getRoles() {
         return villageRoles;
+    }
+
+    public void setRoles(Set<VillageRole> villageRole) {
+        this.villageRoles = villageRole;
     }
 
     public Long getLastActive() {

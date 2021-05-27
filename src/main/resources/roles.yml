@@ -1,5 +1,5 @@
 Settings:
-  defaultRole: Visitor
+  defaultRole: Member
   ownerRole: Owner
 
 VillageGlobalFlags:
@@ -29,7 +29,7 @@ VillageRoles:
       - KICK_MEMBER
       - LAVA_PLACEMENT
       - PANEL
-      - RENAME_ISLAND
+      - RENAME_VILLAGE
       - SET_DESCRIPTION
       - SHULKER_ACCESS
       - WATER_PLACEMENT
@@ -54,7 +54,7 @@ VillageRoles:
       - KICK_MEMBER
       - LAVA_PLACEMENT
       - PANEL
-      - RENAME_ISLAND
+      - RENAME_VILLAGE
       - SET_DESCRIPTION
       - SHULKER_ACCESS
       - WATER_PLACEMENT

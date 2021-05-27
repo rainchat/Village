@@ -1,0 +1,96 @@
+#File tradotto da IlGabiri04;
+#Per aiuto o segnalazione di errori,
+#contattarmi su telegram: @ilgabiri04,
+#oppure nel mio server discord: https://discord.com/invite/9MAkwtb6dd
+Messages:
+  prefix: '&e&lVillaggi: &7'
+  disband: '&7Oh no! &a&l{0} &7cadde in rovina...'
+  help: Digita &b/villages help [page] &7per guardare le pagine della guida.
+  reload: '&aLe configurazioni sono state ricaricate con successo.'
+  no-command-permission: Non hai i permessi per quel comando.
+  no-permission: Non disponi delle autorizzazioni per &b{0}&7.
+  player-offline: Il giocatore &b{0} &7non sembra essere online.
+  page-format: '&b{0}. &7{1}'
+  page-help: '&e&lAiuto: &7[{0}/{1}]'
+  page-limit: Ci sono solo &b{0} &7pagine di aiuto.
+  page-next: Digita &b/villages help {0} &7per la pagina successiva.
+  page-previous: Digita &b/villages help {0} &7per la pagina precedente.
+  claim-page: '&7========= &e&lClaim: &7[{0}/{1}] &7========='
+  request-accept: '&a[Accetta]'
+  request-deny: '&c[Nega]'
+  request-denied: Hai deciso di rifiutare la richiesta.
+  request-disband: Sei sicuro di voler sciogliere il villaggio? Membri del tuo villaggio
+    potrebbero non essere felici!
+  request-invite: Hai inviato una richiesta di invito a &b{0}&7.
+  request-invite-self: Non puoi invitare te stesso.
+  request-invite-target: Sei stato invitato a partecipare &b{0}&7. Vuoi unirti?
+  request-invite-target-not-null: 'Il giocatore &b{0} &7appartiene gia'' a un villaggio.'
+  request-join: '&b{0} &7e'' entrato a far parte del villaggio.'
+  request-join-target: '&7Ti sei iscritto al &b{0} &7villaggio.'
+  request-kick: Sei sicuro di voler cacciare &b{0} &7 dal tuo villaggio?
+  request-kick-self: Non puoi cacciarti da solo dal villaggio.
+  request-kick-target: Sei stato espulso dal &b{0} &7villaggio.
+  request-null: Non hai richieste in sospeso.
+  request-pending: 'Hai gia'' una richiesta in sospeso.'
+  tooltip: '&7Fare clic per selezionare.'
+  usage: 'Utilizzo: &b{0}'
+  info-village:
+    - '&7&o%village_target_name%'
+    - ''
+    - '&7Proprietario: &b%target_owner%'
+    - '&7Membri: &e%target_members%'
+    - '&7Claim: &c%target_claims%'
+  info-village-null: '&eNessun villaggio e'' stato trovato su questo chunk!'
+  village-no-exists: Un villaggio chiamato &b%arg_2% &7non esiste.
+  village-admin-unclaim-one: '''&7Non puoi unclaim perche'' questo villaggio ha solo
+     un pezzo.'''
+  village-admin-enabled: 'Modalita'' amministratore: &aabilitata'
+  village-admin-null: Nessun villaggio esiste nella tua posizione attuale.
+  village-admin-unclaim: Terreno non rivendicato con successo a &b{0} &7a partire dal &b{1}&7.
+  village-admin-disabled: 'Modalita'' amministratore: &adisabitata'
+  village-already-owner: Non puoi impostare il nuovo proprietario su te stesso.
+  village-claim: 'Hai rivendicato una nuova terra per il tuo villaggio: &b{0}'
+  village-claim-owned: La terra che stai cercando di rivendicare appartiene gia'' al tuo villaggio.
+  village-claim-other: La terra che stai cercando di rivendicare appartiene a un altro villaggio.
+  village-teleport: 'Sei stato teletrasportato per rivendicare: &b{0}&7'
+  village-cooldown: Puoi teletrasportarti di nuovo a casa in &b{0} &7secondi.
+  village-create: Hai stabilito un nuovo villaggio chiamato &b{0}&7.
+  village-create-other: Il nome del tuo villaggio non puo'' essere piu'' lungo di &b32 &7caratteri.
+  village-description-limit: La descrizione del tuo villaggio non puo'' essere piu'' lunga di
+    &b32&7 caratteri.
+  village-exists: Un villaggio chiamato &b{0} &7e'' gia'' esistente.
+  village-home: Sei stato teletrasportato alla casa del tuo villaggio.
+  village-leave: Hai lasciato il &b{0} &7villaggio.
+  village-leave-owner: Non puoi lasciare il tuo villaggio attuale perche'' sei il proprietario.
+  village-max-claims: Non puoi pretendere piu'' di &b{0} &7terra per il tuo villaggio.
+  village-member-null: '&b{0} &7non sembra appartenere al tuo villaggio.'
+  village-not-null: Appartieni gia'' a un villaggio.
+  village-null: Non appartieni a un villaggio.
+  village-owner: Devi essere il proprietario del villaggio per fare quell''azione.
+  village-rename: 'Hai rinominato il villaggio in: &b{0}'
+  village-set-description: 'Hai impostato la descrizione del villaggio su: &b{0}'
+  village-set-home: Hai impostato la casa per il tuo villaggio.
+  village-set-owner: Hai impostato il nuovo proprietario del villaggio su &b{0}&7.
+  village-unclaim: Hai della terra non reclamata per il tuo villaggio.
+  village-unclaim-one: Non puoi annullare la rivendicazione perche'' il tuo villaggio possiede solo una terra.
+  village-unclaim-other: La terra che stai cercando di rivendicare non appartiene al tuo villaggio.
+  village-sub-claim-null: '&7I punti selezionati non sono nel villaggio'
+  village-sub-claim-cut: '&7Il subclaims non puo'' &7sovrapporsi'
+  village-sub-claim-name: '&7Il nome per il &esubclaim &7deve essere unico'
+  village-sub-claim-name-null: '&7Non c''e'' &esubclaim &7con questo nome.'
+  village-sub-claim-unselected: '&7I posti per il &esubclaim &7non sono selezionati'
+  village-sub-claim-remove: '&7Subclaim &e%subclaim_name% &7cancellato con successo '
+  village-sub-claim-add-member: '&7Il giocatore e'' stato aggiunto con successo alla domanda secondaria'
+  village-sub-claim: Hai rivendicato un nuovo subclaim con nome &b%subclaim_name%
+  world-guard: Non puoi claimare una worldguard region.
+  world-not-enabled: I villaggi non sono abilitati in questo mondo.
+Title:
+  header: '&e&l{0}!'
+  footer: '&7Benvenuto a &b{0}''s &7villaggio.'
+  wilderness-header: '&a&lNatura selvaggia!'
+  wilderness-footer: '&7Ti aspetta una nuova terra fresca.'
+Economy:
+  create-village: '&7Non hai abbastanza soldi per &ecreare &7il &evillaggio &8(hai bisogno
+     di soldi &c%econ_need%&8)'
+  claim-village: '&7Non hai abbastanza soldi per &eclaimare &7il chunk &8(hai bisogno di soldi
+    &c%econ_need%&8)'

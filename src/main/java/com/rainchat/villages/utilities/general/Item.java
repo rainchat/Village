@@ -1,5 +1,6 @@
 package com.rainchat.villages.utilities.general;
 
+import com.rainchat.rainlib.placeholder.PlaceholderSupply;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.enchantments.Enchantment;
@@ -18,7 +19,21 @@ public class Item {
     private Material material;
     private short durability;
     private String[] lore;
+    private int custom_model = -1;
     private Map<Enchantment, Integer> enchantments;
+
+
+    public String getName() {
+        return name;
+    }
+
+    public String[] getLore() {
+        return lore;
+    }
+
+    public Material getMaterial() {
+        return material;
+    }
 
     public Item name(Message message) {
         this.name = message.toString();
@@ -35,6 +50,12 @@ public class Item {
         return this;
     }
 
+    public Item setCustomModelDate(int value) {
+        this.custom_model = value;
+        return this;
+    }
+
+
     public Item durability(int durability) {
         this.durability = (short) durability;
         return this;
@@ -49,6 +70,12 @@ public class Item {
         this.lore = lore.toArray(new String[0]);
         return this;
     }
+
+    public Item lore(String[] lore) {
+        this.lore = lore;
+        return this;
+    }
+
 
     public Item enchants(Map<Enchantment, Integer> enchantments) {
         this.enchantments = enchantments;
@@ -76,6 +103,27 @@ public class Item {
         if (name != null) itemMeta.setDisplayName(Chat.color(name));
         if (enchantments != null) enchantments.forEach(itemStack::addEnchantment);
         if (lore != null) itemMeta.setLore(Arrays.stream(lore).map(Chat::color).collect(Collectors.toList()));
+        if (custom_model != -1) itemMeta.setCustomModelData(custom_model);
+
+
+        itemStack.setItemMeta(itemMeta);
+        return itemStack;
+    }
+
+
+    public ItemStack build(PlaceholderSupply<?>... replacementSource) {
+        if (material == null) return null;
+        ItemStack itemStack = new ItemStack(material);
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        if (itemMeta == null) return null;
+        if (durability >= 0) itemStack.setDurability(durability);
+        if (name != null) itemMeta.setDisplayName(Chat.color(Chat.translateRaw(name, replacementSource)));
+        if (enchantments != null) enchantments.forEach(itemStack::addEnchantment);
+        if (lore != null)
+            itemMeta.setLore(Chat.translateRaw(Arrays.stream(lore).map(Chat::color).collect(Collectors.toList()), replacementSource));
+        if (custom_model != -1) itemMeta.setCustomModelData(custom_model);
+
+
         itemStack.setItemMeta(itemMeta);
         return itemStack;
     }

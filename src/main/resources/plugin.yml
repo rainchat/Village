@@ -5,11 +5,45 @@ api-version: 1.13
 authors: [ rain_chat ]
 description: Fork of the original Villages (by StefTheDev)
 
-softdepend: [PlaceholderAPI, WorldGuard]
+softdepend: [ PlaceholderAPI, WorldGuard, Vault ]
 
-commands:
-  village:
-    description: The village command.
-    aliases:
-      - villages
-      - v
+
+permissions:
+  village.*:
+    default: false
+    description: all village permissions.
+    children:
+      village.commands.admin.*: true
+      village.commands.user.*: true
+
+  village.commands.user.*:
+    default: false
+    description: user village permissions.
+    children:
+      village.commands.unclaim: true
+      village.commands.claim: true
+      village.commands.list: true
+      village.commands.create: true
+      village.commands.disband: true
+      village.commands.invite: true
+      village.commands.kick: true
+      village.commands.rename: true
+      village.commands.setowner: true
+      village.commands.setdescription: true
+      village.commands.accept: true
+      village.commands.deny: true
+      village.commands.leave: true
+      village.commands.home: true
+      village.commands.sethome: true
+      village.commands.panel: true
+      village.commands.subclaim.creaate: true
+      village.commands.subclaim.remove: true
+
+  village.commands.admin.*:
+    default: false
+    description: admin village permissions.
+    children:
+      village.commands.admin.mode: true
+      village.commands.admin.disband: true
+      village.commands.admin.villages: true
+      village.commands.admin.open: true

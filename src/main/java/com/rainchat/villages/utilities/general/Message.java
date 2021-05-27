@@ -1,67 +1,30 @@
 package com.rainchat.villages.utilities.general;
 
+import com.rainchat.rainlib.utils.Color;
 import com.rainchat.villages.managers.FileManager;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public enum Message {
+    PREFIX("Messages.prefix", "&e&lVillages: &7"),
     DISBAND("Messages.disband", "&7Oh no! &a&l{0} &7fell into ruins..."),
     HELP("Messages.help", "Type &b/villages help [page] &7to look at the help pages."),
-    MENU_BACK_TITLE("Menu.back.title", "&fBack"),
-    MENU_BACK_LORE("Menu.back.lore", Collections.singletonList("&7Click for previous menu.")),
-    MENU_CLAIM_TITLE("Menu.claim.title", "&a{0}"),
-    MENU_CLAIM_LORE("Menu.claim.lore", Collections.singletonList("&7Click to teleport to claim.")),
-    MENU_CLAIMS_TITLE("Menu.claims.title", "&b&lClaims"),
-    MENU_CLAIMS_LORE("Menu.claims.lore", Collections.singletonList("&7Edit claims of your village.")),
-    MENU_DISABLED_TITLE("Menu.disabled.title", "&c{0}"),
-    MENU_DISABLED_LORE("Menu.disabled.lore", Collections.singletonList("&7Click to enable Permission.")),
-    MENU_DISBAND_TITLE("Menu.disband.title", "&c&lDisband"),
-    MENU_DISBAND_LORE("Menu.disband.lore", Collections.singletonList("&7Click to disband your village.")),
-    MENU_ENABLED_TITLE("Menu.enabled.title", "&a{0}"),
-    MENU_ENABLED_LORE("Menu.enabled.lore", Collections.singletonList("&7Click to disable Permission.")),
-    MENU_GLOBAL_PERMISSIONS_TITLE("Menu.global-permissions.title", "&6&lGlobal Permissions"),
-    MENU_GLOBAL_PERMISSIONS_LORE("Menu.global-permissions.lore", Collections.singletonList("&7Click to change global permissions.")),
-    MENU_HOME_TITLE("Menu.home.title", "&6&lHome"),
-    MENU_HOME_LORE("Menu.home.lore", Collections.singletonList("&7Teleport to village home.")),
-    MENU_INFORMATION_TITLE("Menu.information.title", "&e&lInformation"),
-    MENU_INFORMATION_LORE("Menu.information.lore", Arrays.asList(
-            "&7&o%village_target_name%",
-            "",
-            "&7Owner: &b%target_owner%",
-            "&7Members: &e%target_members%",
-            "&7Claims: &c%target_claims%"
-    )),
-    MENU_ROLES_TITLE("Menu.member-role.title", "&2&l{role}"),
-    MENU_ROLES_LORE("Menu.member-role.title", Collections.singletonList("&aClick to change permissions")),
-    MENU_MEMBER_ROLE_LORE("Menu.member-role.title", "&a&l{role}"),
-    MENU_MEMBER_ROLE_TITLE("Menu.member-role.lore", Collections.singletonList("&7Click to give the player a role")),
-    MENU_ROLES_MENU_TITLE("Menu.roles-menu.title", "&2&lRole Menu"),
-    MENU_ROLES_MENU_LORE("Menu.roles-menu.lore", Collections.singletonList("&7Click to configure roles.")),
-    MENU_MEMBER_TITLE("Menu.member.title", "&a{0}"),
-    MENU_MEMBER_LORE("Menu.member.lore", Collections.singletonList("&7Click to edit member.")),
-    MENU_MEMBERS_TITLE("Menu.members.title", "&a&lMembers"),
-    MENU_MEMBERS_LORE("Menu.members.lore", Collections.singletonList("&7Edit members of your village.")),
-    MENU_NEXT_TITLE("Menu.next.title", "&fNext"),
-    MENU_NEXT_LORE("Menu.next.lore", Collections.singletonList("&7Click for next page.")),
-    MENU_PEACEFUL_ENABLED_TITLE("Menu.peaceful.enabled.title", "&aPeaceful"),
-    MENU_PEACEFUL_ENABLED_LORE("Menu.peaceful.enabled.lore", Collections.singletonList("&7Click to disable.")),
-    MENU_PEACEFUL_DISABLED_TITLE("Menu.peaceful.disabled.title", "&cPeaceful"),
-    MENU_PEACEFUL_DISABLED_LORE("Menu.peaceful.disabled.lore", Collections.singletonList("&7Click to enable.")),
-    MENU_PREVIOUS_TITLE("Menu.previous.title", "&fPrevious"),
-    MENU_PREVIOUS_LORE("Menu.previous.lore", Collections.singletonList("&7Click for previous page.")),
+    RELOAD("Messages.reload", "&aconfigurations were successfully reloaded."),
     NO_COMMAND_PERMISSION("Messages.no-command-permission", "You do not have permissions for that command."),
     NO_PERMISSION("Messages.no-permission", "You do not have permissions for &b{0}&7."),
+    PLAYER_OFFLINE("Messages.player-offline", "The player &b{0} &7does not seem to be online."),
+
+
     PAGE_FORMAT("Messages.page-format", "&b{0}. &7{1}"),
     PAGE_HELP("Messages.page-help", "&e&lHelp: &7[{0}/{1}]"),
     PAGE_LIMIT("Messages.page-limit", "There are only &b{0} &7help pages."),
     PAGE_NEXT("Messages.page-next", "Type &b/villages help {0} &7for the next page."),
     PAGE_PREVIOUS("Messages.page-previous", "Type &b/villages help {0} &7for the previous page."),
     CLAIM_PAGE("Messages.claim-page", "&7========= &e&lClaim: &7[{0}/{1}] &7========="),
-    PLAYER_OFFLINE("Messages.player-offline", "The player &b{0} &7does not seem to be online."),
-    PREFIX("Messages.prefix", "&e&lVillages: &7"),
+    CLAIM_LIST_EMPTY("Messages.claim-list-empty", "&7Village list is empty"),
+
     REQUEST_ACCEPT("Messages.request-accept", "&a[Accept]"),
     REQUEST_DENY("Messages.request-deny", "&c[Deny]"),
     REQUEST_DENIED("Messages.request-denied", "You have decided to deny the request."),
@@ -77,13 +40,18 @@ public enum Message {
     REQUEST_KICK_TARGET("Messages.request-kick-target", "You have been kicked from the &b{0} &7village."),
     REQUEST_NULL("Messages.request-null", "You do not have any pending requests."),
     REQUEST_PENDING("Messages.request-pending", "You already have a pending request."),
+
     TITLE_HEADER("Title.header", "&e&l{0}!"),
     TITLE_FOOTER("Title.footer", "&7Welcome to &b{0}'s &7village."),
     TITLE_WILDERNESS_HEADER("Title.wilderness-header", "&a&lWilderness!"),
     TITLE_WILDERNESS_FOOTER("Title.wilderness-footer", "&7Fresh new land awaits you."),
     TOOLTIP("Messages.tooltip", "&7Click to select."),
     USAGE("Messages.usage", "Usage: &b{0}"),
-    VILLAGE_INFO("Messages.info-village",  Arrays.asList(
+
+    ECONOMY_CREATE_VILLAGE("Economy.create-village", "&7You don't have enough money to &ecreate &7the &evillage &8(need money &c%econ_need%&8)"),
+    ECONOMY_CLAIM_VILLAGE("Economy.claim-village", "&7You don't have enough money to &eclaim &7the chunk &8(need money &c%econ_need%&8)"),
+
+    VILLAGE_INFO("Messages.info-village", Arrays.asList(
             "&7&o%village_target_name%",
             "",
             "&7Owner: &b%target_owner%",
@@ -123,17 +91,37 @@ public enum Message {
     VILLAGE_UNCLAIM("Messages.village-unclaim", "You have unclaimed land for your village."),
     VILLAGE_UNCLAIM_ONE("Messages.village-unclaim-one", "You can't unclaim because your village only owns one land."),
     VILLAGE_UNCLAIM_OTHER("Messages.village-unclaim-other", "The land you are trying to unclaim does not belong to your village."),
+
+    VILLAGE_SUB_CLAIM_NULL("Messages.village-sub-claim-null", "&7Selected points are not in the village"),
+    VILLAGE_SUB_CLAIM_CUT("Messages.village-sub-claim-cut", "&7subclaims cannot &7overlap"),
+    VILLAGE_SUB_CLAIM_NAME("Messages.village-sub-claim-name", "&7The name for the &esubclaim &7must be unique"),
+    VILLAGE_SUB_CLAIM_NAME_NULL("Messages.village-sub-claim-name-null", "&7There is no &esubclaim &7with this name."),
+    VILLAGE_SUB_CLAIM_UNSELECTED("Messages.village-sub-claim-unselected", "&7pos for &esubclaim &7are not selected"),
+    VILLAGE_SUB_CLAIM_REMOVE("Messages.village-sub-claim-remove", "&7Subclaim &e%subclaim_name% &7successfully deleted "),
+    VILLAGE_SUB_CLAIM_ADD_MEMBER("Messages.village-sub-claim-add-member", "&7The player was successfully added to the subclaim"),
+    VILLAGE_SUB_CLAIM("Messages.village-sub-claim", "You have claimed new subclaim whith name &b%subclaim_name%"),
+
     WORLDGUARD_CLAIM("Messages.world-guard", "You can't claim in a worldguard region."),
-    WORLDGUARD_CREATE("Messages.world-guard", "You create land in a worldguard region."),
+    WORLDGUARD_CREATE("Messages.world-guard", "You can't create land in a worldguard region."),
     WORLD_NOT_ENABLED("Messages.world-not-enabled", "Villages is not enabled in this world.");
 
+    private static FileManager.CustomFile configuration;
     private final String path;
     private String def;
     private List<String> list;
-    private static FileConfiguration configuration;
 
-    public static int addMissingMessages(String name) {
-        FileConfiguration file = FileManager.getInstance().getFile(name).getFile();
+    Message(String path, String def) {
+        this.path = path;
+        this.def = def;
+    }
+
+    Message(String path, List<String> list) {
+        this.path = path;
+        this.list = list;
+    }
+
+    public static int addMissingMessages() {
+        FileConfiguration file = configuration.getFile();
         int index = 0;
 
         boolean saveFile = false;
@@ -149,26 +137,11 @@ public enum Message {
             }
         }
         if (saveFile) {
-            FileManager.getInstance().saveFile(name);
+            configuration.saveFile();
         }
 
 
-
         return index;
-    }
-
-    Message(String path, String def) {
-        this.path = path;
-        this.def = def;
-    }
-
-    Message(String path, List<String> list) {
-        this.path = path;
-        this.list = list;
-    }
-
-    public String getDef() {
-        return configuration.getString(path, def);
     }
 
     public static String convertList(List<String> list) {
@@ -179,6 +152,14 @@ public enum Message {
         return message;
     }
 
+    public static void setConfiguration(FileManager.CustomFile configuration) {
+        Message.configuration = configuration;
+    }
+
+    public String getDef() {
+        return configuration.getFile().getString(path, def);
+    }
+
     @Override
     public String toString() {
         String message;
@@ -186,13 +167,13 @@ public enum Message {
         boolean exists = exists();
         if (isList) {
             if (exists) {
-                message = convertList(configuration.getStringList(path));
+                message = convertList(configuration.getFile().getStringList(path));
             } else {
                 message = convertList(getDefaultListMessage());
             }
         } else {
             if (exists) {
-                message = configuration.getString(path);
+                message = configuration.getFile().getString(path);
             } else {
                 message = getDefaultMessage();
             }
@@ -202,31 +183,23 @@ public enum Message {
     }
 
     public String getMessage() {
-        return Color.parseHexString(configuration.getString(path, def));
+        return Color.parseHexString(configuration.getFile().getString(path, def));
     }
 
-
     private boolean exists() {
-        return configuration.contains(path);
+        return configuration.getFile().contains(path);
     }
 
     private boolean isList() {
-        if (configuration.contains(path)) {
-            return !configuration.getStringList(path).isEmpty();
+        if (configuration.getFile().contains(path)) {
+            return !configuration.getFile().getStringList(path).isEmpty();
         } else {
             return def == null;
         }
     }
 
-
-
-
     public List<String> toList() {
-        return configuration.getStringList(path);
-    }
-
-    public static void setConfiguration(FileConfiguration configuration) {
-        Message.configuration = configuration;
+        return configuration.getFile().getStringList(path);
     }
 
     public String getPath() {

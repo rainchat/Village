@@ -1,0 +1,92 @@
+Messages:
+  disband: '&7Ох нет! &a&l{0} &7превратился в руины...'
+  help: Напишите &b/villages help [страница] &7чтобы высветилась подсказка.
+  no-command-permission: У вас нет прав для этой команды.
+  no-permission: У вас нет разрешений для &b{0}&7.
+  page-format: '&b{0}. &7{1}'
+  page-help: '&e&lПомощь: &7[{0}/{1}]'
+  page-limit: Есть только &b{0} &7страниц помощи.
+  page-next: Напишите &b/villages help {0} &7для следующей страницы .
+  page-previous: Напишите &b/villages help {0} &7для предыдущей страницы.
+  player-offline: Игрок &b{0} &7не в сети.
+  prefix: '&e&lVillages: &7'
+  request-accept: '&a[Принять]'
+  request-deny: '&c[Отклонить]'
+  request-denied: Вы решили отклонить запрос.
+  request-disband: Вы уверены, что хотите распустить деревню? Члены вашей деревни
+    могут не быть недовольны!
+  request-invite: Вы отправили запрос на приглашение &b{0}&7.
+  request-invite-self: Ты не можешь пригласить себя.
+  request-invite-target: Вас пригласили присоединиться &b{0}&7. Вы хотите присоединиться?
+  request-invite-target-not-null: Игрок &b{0} &7уже находится в деревне.
+  request-join: '&b{0} &7присоединился к деревне.'
+  request-join-target: '&7Вы присоединились к &b{0} &7деревне.'
+  request-kick: Вы уверены, что хотите выкинуть &b{0} &7 из деревни?
+  request-kick-self: Вы не можете выгнать себя из деревни.
+  request-kick-target: Вы были выгнаны из деревни &b{0}.
+  request-null: У вас нет ожидающих запросов.
+  request-pending: У вас уже есть ожидающий запрос.
+  tooltip: '&7Нажмите чтобы выбрать.'
+  usage: 'Использовать: &b{0}'
+  village-admin-enabled: 'Админ мод: &aвключен'
+  village-admin-null: В вашем текущем местоположении нет деревни.
+  village-admin-unclaim: Успешно уделен участок &b{0} &7из &b{1}&7.
+  village-admin-disabled: 'Админ мод: &cвыключен'
+  village-already-owner: Вы не можете назначить себе новым владельцем.
+  village-claim: 'Вы заприватили новую землю для своей деревни: &b{0}'
+  village-claim-owned: Земля, на которую вы претендуете, уже принадлежит вашей деревне.
+  village-claim-other: Земля, на которую вы претендуете, принадлежит другой деревне.
+  village-teleport: 'Вы были телепортированы на участок: &b{0}&7'
+  village-cooldown: Вы можете снова телепортироваться домой через &b{0} &7секунд.
+  village-create: Вы основали новую деревню под названием &b{0}&7.
+  village-create-other: Название вашей деревни не может быть длиннее, чем &b32 &7символа.
+  village-description-limit: Описание вашей деревни не может быть длиннее, чем &b32&7
+    символа.
+  village-exists: Деревня под названием &b{0} &7уже создана.
+  village-home: Вы были телепортированы в свой деревенский дом.
+  village-leave: Вы ушли из деревни &b{0}.
+  village-leave-owner: Вы не можете покинуть свою текущую деревню, потому что вы ее
+    владелец.
+  village-max-claims: Вы не можете иметь больше чем &b{0} &7участков для своей деревни.
+  village-member-null: '&b{0} &7не похоже на вашу деревню.'
+  village-not-null: Вы уже принадлежите к деревне.
+  village-null: Вы не из деревни.
+  village-owner: Для этого вы должны быть владельцем деревни.
+  village-rename: 'Вы переименовали деревню в: &b{0}'
+  village-set-description: 'Вы установили описание деревни на: &b{0}'
+  village-set-home: Вы установили дом для своей деревни.
+  village-set-owner: Вы назначили нового владельца деревни &b{0}&7.
+  village-unclaim: Вы сделали этот участок свободным для привата.
+  village-unclaim-one: Вы не можете отказаться от участка, потому что ваша деревня
+    владеет только одной землей.
+  village-unclaim-other: Земля, которую вы хотите сделать свободной, не принадлежит
+    вашей деревне.
+  world-guard: Вы не можете приватить в регионе WorldGuard.
+  world-not-enabled: Деревни не включены в этом мире.
+  claim-page: '&7========= &e&lClaim: &7[{0}/{1}] &7========='
+  info-village:
+    - '&7&o%village_target_name%'
+    - ''
+    - '&7Владелец: &b%target_owner%'
+    - '&7Участники: &e%target_members%'
+    - '&7Приваты: &c%target_claims%'
+  info-village-null: '&eНа этом участке деревни не найдено!'
+  village-no-exists: Деревня с именем &b%arg_2% &7не найдена.
+  village-admin-unclaim-one: 'Вы не можете расприватить этот участок потому что деревня имеет только один участок'
+  village-sub-claim-null: '&7Выделенные точки не находятся в деревне'
+  village-sub-claim-cut: '&7Подрегионы не должны &7пересекаться'
+  village-sub-claim-name: '&7Имя у подрегиона должно быть уникальным'
+  village-sub-claim-name-null: '&7Такого &eподрегиона не существует.'
+  village-sub-claim-unselected: '&7Вы не выделили позицыи для вашего &eподрегиона'
+  village-sub-claim-remove: '&7Подрегион &e%subclaim_name% &7успешно удален'
+  village-sub-claim-add-member: '&7Игрок был добавлен в подрегион'
+  village-sub-claim: Вы заприватили новый подрегион &b%subclaim_name%
+  reload: '&aконфигурации успешно перезагружены.'
+Title:
+  header: '&e&l{0}!'
+  footer: '&7Добро пожаловать в &b{0} &7деревню.'
+  wilderness-header: '&a&lПустошь!'
+  wilderness-footer: '&7Свободная, новая земля ждет тебя .'
+Economy:
+  create-village: '&7У вас недостаточно денег чтобы &eсоздать &7этот &eдеревню &8(нужно денег &c%econ_need%&8)'
+  claim-village: '&7У вас недостаточно денег чтобы &eзаприватить &7этот чанк &8(нужно денег &c%econ_need%&8)'

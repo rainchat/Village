@@ -5,9 +5,12 @@ import org.bukkit.plugin.Plugin;
 
 public class VillageLocation {
 
-    private double x, y, z;
-    private float yaw, pitch;
-    private String world;
+    private final double x;
+    private final double y;
+    private final double z;
+    private final float yaw;
+    private final float pitch;
+    private final String world;
 
     VillageLocation(double x, double y, double z, float yaw, float pitch, String world) {
         this.x = x;

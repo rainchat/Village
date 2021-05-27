@@ -33,7 +33,7 @@ public class VillageListener implements Listener {
         Village playerVillage = villageManager.getVillage(player);
 
         if (playerVillage == currentVillage) {
-            if (villageManager.checkPermission(VillagePermission.BLOCK_BREAK, playerVillage, player))
+            if (villageManager.hasPermission(VillagePermission.BLOCK_BREAK, playerVillage, player, block.getLocation()))
                 event.setCancelled(true);
         } else {
             event.setCancelled(true);
@@ -53,7 +53,7 @@ public class VillageListener implements Listener {
         Village playerVillage = villageManager.getVillage(player);
 
         if (playerVillage == currentVillage) {
-            if (villageManager.checkPermission(VillagePermission.BLOCK_PLACE, playerVillage, player))
+            if (villageManager.hasPermission(VillagePermission.BLOCK_PLACE, playerVillage, player, block.getLocation()))
                 event.setCancelled(true);
         } else {
             event.setCancelled(true);

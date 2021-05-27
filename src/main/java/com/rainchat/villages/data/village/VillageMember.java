@@ -4,9 +4,8 @@ import java.util.UUID;
 
 public class VillageMember {
 
-    private long cooldown = 0;
     private final UUID uuid;
-
+    private long cooldown = 0;
     private String role;
 
     public VillageMember(UUID uuid) {
@@ -18,9 +17,8 @@ public class VillageMember {
         return role;
     }
 
-
-    public void setCooldown(long time) {
-        this.cooldown = System.currentTimeMillis() + (time * 1000);
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public boolean hasCooldown() {
@@ -31,8 +29,8 @@ public class VillageMember {
         return cooldown;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public void setCooldown(long time) {
+        this.cooldown = System.currentTimeMillis() + (time * 1000);
     }
 
     public UUID getUniqueId() {

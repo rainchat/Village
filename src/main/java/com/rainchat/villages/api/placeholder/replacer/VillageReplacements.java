@@ -1,27 +1,24 @@
 package com.rainchat.villages.api.placeholder.replacer;
 
-
+import com.rainchat.rainlib.placeholder.BaseReplacements;
 import com.rainchat.villages.Villages;
-import com.rainchat.villages.api.placeholder.BaseReplacements;
 import com.rainchat.villages.data.village.Village;
-import com.rainchat.villages.managers.VillageManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.Objects;
 
 public class VillageReplacements extends BaseReplacements<Player> {
-    private final Player player;
+
     private final Villages plugin;
-    private final VillageManager islandManager;
+    private final Village village;
 
 
-    public VillageReplacements(Player player) {
+    public VillageReplacements(Village village) {
         super("village_");
 
-        this.player = player;
+        this.village = village;
         this.plugin = Villages.getInstance();
-        this.islandManager = plugin.getVillageManager();
     }
 
 
@@ -32,9 +29,6 @@ public class VillageReplacements extends BaseReplacements<Player> {
 
     @Override
     public String getReplacement(String base, String fullKey) {
-
-        Village village = islandManager.getVillage(player);
-
         if (village != null) {
             switch (base) {
                 case "name":
@@ -47,22 +41,7 @@ public class VillageReplacements extends BaseReplacements<Player> {
                     return String.valueOf(village.getVillageClaims().size());
             }
         }
-
-        village = islandManager.getVillage(player.getChunk());
-
-        if (village != null) {
-            switch (base) {
-                case "target_name":
-                    return Objects.requireNonNull(Bukkit.getPlayer(village.getOwner())).getName();
-                case "target_owner":
-                    return plugin.getServer().getOfflinePlayer(village.getOwner()).getName();
-                case "target_members":
-                    return String.valueOf(village.getVillageMembers().size());
-                case "target_claims":
-                    return String.valueOf(village.getVillageClaims().size());
-            }
-        }
-
-        return " ";
+        return "";
     }
+
 }

@@ -12,7 +12,4 @@ public class Checks {
         return false;
     }
 
-    public static boolean isActive(Long lastActive, Long maxNonActive) {
-        return lastActive - System.currentTimeMillis() > maxNonActive;
-    }
 }

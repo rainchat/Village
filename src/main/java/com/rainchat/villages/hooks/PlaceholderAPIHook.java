@@ -2,7 +2,6 @@ package com.rainchat.villages.hooks;
 
 import com.rainchat.villages.Villages;
 import com.rainchat.villages.data.village.Village;
-import com.rainchat.villages.managers.ConfigSettings;
 import com.rainchat.villages.managers.VillageManager;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.entity.Player;
@@ -41,13 +40,6 @@ public class PlaceholderAPIHook extends PlaceholderExpansion {
     public String onPlaceholderRequest(Player player, String identifier) {
         Village village = villageManager.getVillage(player);
 
-
-        int defaultClaimLimit = ConfigSettings.CLAIM_DEFAULT_CLAIM_LIMIT.getInt();
-        if (identifier.equalsIgnoreCase("max_claims")) {
-
-            return String.valueOf(villageManager.getMax(player) + defaultClaimLimit);
-        }
-
         if (village != null) {
             if (identifier.equalsIgnoreCase("name")) {
                 return village.getName();
@@ -62,6 +54,10 @@ public class PlaceholderAPIHook extends PlaceholderExpansion {
 
             if (identifier.equalsIgnoreCase("claims")) {
                 return String.valueOf(village.getVillageClaims().size());
+            }
+
+            if (identifier.equalsIgnoreCase("max_claims")) {
+                return String.valueOf(villageManager.checkMaxClaims(village));
             }
         }
 

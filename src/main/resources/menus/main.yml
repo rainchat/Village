@@ -1,0 +1,59 @@
+Menu-settings:
+
+  title: "Main menu"
+
+  fill-items:
+    material: black_stained_glass_pane
+    name: "&7&l+"
+    madel-date: 11
+
+  size: 5
+
+
+Menu-items:
+
+  main-item:
+    slot: 4
+    material: Writable_book
+    name: "&2Global permissions"
+    lore:
+      - "&7click to open"
+    actions:
+      - "[menu-open]GlobalPermission"
+
+  page-previous:
+    slot: 20
+    material: Nether_Star
+    name: "&9Member menu"
+    lore:
+      - "&7click to open"
+    actions:
+      - "[menu-open]MembersMenu"
+
+  back:
+    slot: 22
+    material: Chest
+    name: "&aClaims menu"
+    lore:
+      - "&7click to open"
+    actions:
+      - "[menu-open]ClaimMenu"
+
+  subclaims-menu:
+    slot: 24
+    material: Oak_sign
+    name: "&eSubClaims"
+    lore:
+      - "&7click to open"
+    actions:
+      - "[menu-open]SubClaimMenuPermission"
+
+
+  role-menu:
+    slot: 40
+    material: Emerald
+    name: "&6Roles Menu"
+    lore:
+      - "&7click to open"
+    actions:
+      - "[menu-open]RolesMenu"

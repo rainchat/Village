@@ -1,6 +1,6 @@
 package com.rainchat.villages.data.village;
 
-import com.rainchat.villages.managers.FileManager;
+import com.rainchat.villages.data.config.ConfigRole;
 import com.rainchat.villages.managers.VillageManager;
 import com.rainchat.villages.utilities.general.Chat;
 import com.rainchat.villages.utilities.general.Message;
@@ -15,12 +15,6 @@ import org.bukkit.entity.Player;
 import java.util.UUID;
 
 public class VillageRequest {
-
-    public enum VillageRequestAction {
-        DISBAND,
-        INVITE,
-        KICK
-    }
 
     private final Village village;
     private final UUID uuid, target;
@@ -83,7 +77,7 @@ public class VillageRequest {
                 if (player != null) {
                     player.sendMessage(Chat.format(Message.REQUEST_JOIN_TARGET.toString().replace("{0}", village.getName())));
                     VillageMember villageMember = new VillageMember(player.getUniqueId());
-                    villageMember.setRole(FileManager.Files.ROLES.getFile().getString("Settings.defaultRole", "null"));
+                    villageMember.setRole(ConfigRole.DEFAULT_ROLE);
                     village.add(villageMember);
                 }
             }
@@ -106,5 +100,11 @@ public class VillageRequest {
 
     public UUID getTarget() {
         return target;
+    }
+
+    public enum VillageRequestAction {
+        DISBAND,
+        INVITE,
+        KICK
     }
 }

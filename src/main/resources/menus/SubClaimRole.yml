@@ -1,0 +1,53 @@
+Menu-settings:
+
+  title: "&0[&6SubClaim roles&0]"
+
+  fill-items:
+    material: black_stained_glass_pane
+    name: "&7&l+"
+    madel-date: 11
+
+  pagination-slots: 9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35
+
+  size: 5
+
+
+Pagination-items:
+  type: subclaim-role-menu
+  name: "&2%role_name%"
+  material: Book
+  lore:
+    - '&7Current role: &a%subclaim_role%'
+    - '&eclick to change'
+  actions:
+    - "[menu-open]SubClaimMenuRole"
+
+
+Menu-items:
+
+  page-previous:
+    slot: 39
+    material: Arrow
+    name: "&eprevious page"
+    lore:
+      - "&7click to previous page"
+    actions:
+      - "[previous-page]"
+
+  page-next:
+    slot: 41
+    material: Arrow
+    name: "&enext page"
+    lore:
+      - "&7click to next page"
+    actions:
+      - "[next-page]"
+
+  back:
+    slot: 36
+    material: Barrier
+    name: "&7Back to main menu"
+    lore:
+      - "&eclick to nice"
+    actions:
+      - "[menu-open]main"
