@@ -13,7 +13,6 @@ import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionQuery;
-import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
 
@@ -39,7 +38,7 @@ public class WorldGuardHook {
         try {
             // create a flag with the name "my-custom-flag", defaulting to true
             StateFlag flag = new StateFlag("village-claim-flag", false);
-            if (registry.get("village-claim-flag") != null){
+            if (registry.get("village-claim-flag") != null) {
                 FLAG_CHUNK_CLAIM = flag;
                 return;
             }

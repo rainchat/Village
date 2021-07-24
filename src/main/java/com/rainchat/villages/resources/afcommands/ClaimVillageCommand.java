@@ -3,15 +3,15 @@ package com.rainchat.villages.resources.afcommands;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
 import com.rainchat.villages.Villages;
+import com.rainchat.villages.api.events.ClaimVillageEvent;
+import com.rainchat.villages.api.events.CreateVillageEvent;
+import com.rainchat.villages.api.events.UnClaimVillageEvent;
 import com.rainchat.villages.api.placeholder.replacer.EconomyReplacements;
 import com.rainchat.villages.data.config.ConfigRole;
 import com.rainchat.villages.data.config.ConfigVillage;
 import com.rainchat.villages.data.enums.ParticleTip;
 import com.rainchat.villages.data.enums.VillagePermission;
-import com.rainchat.villages.data.village.Village;
-import com.rainchat.villages.data.village.VillageClaim;
-import com.rainchat.villages.data.village.VillageMember;
-import com.rainchat.villages.data.village.VillageRequest;
+import com.rainchat.villages.data.village.*;
 import com.rainchat.villages.hooks.EconomyBridge;
 import com.rainchat.villages.hooks.WorldGuardHook;
 import com.rainchat.villages.managers.MenuManager;
@@ -25,7 +25,7 @@ import org.bukkit.entity.Player;
 
 import java.util.Objects;
 
-@CommandAlias("v|village|villages")
+@CommandAlias("%village")
 public class ClaimVillageCommand extends BaseCommand {
 
     private final VillageManager villageManager;
@@ -68,26 +68,35 @@ public class ClaimVillageCommand extends BaseCommand {
     @CommandPermission("village.commands.unclaim")
     public void onUnClaimArg(Player player, String world, int x, int y) {
         Village village = villageManager.getVillage(player);
-        if (village != null) {
-            VillageMember villageMember = village.getMember(player.getUniqueId());
-            if (villageManager.hasPermission(VillagePermission.UNCLAIM_LAND, village, villageMember.getUniqueId())) {
-                Village tempVillage = villageManager.getVillage(Objects.requireNonNull(Bukkit.getWorld(world)).getChunkAt(x,y));
-                if (tempVillage == village) {
-                    if (village.getVillageClaims().size() > 1) {
-                        VillageClaim villageClaim = villageManager.getClaim(village, player.getLocation().getChunk());
-                        village.remove(villageClaim);
-                        ParticleSpawn.particleTusc(player, player.getLocation().getChunk(), ParticleTip.UN_CLAIM);
-                        player.sendMessage(Chat.format(Message.VILLAGE_UNCLAIM.toString()));
-                    } else {
-                        player.sendMessage(Chat.format(Message.VILLAGE_UNCLAIM_ONE.toString()));
-                    }
-                } else {
-                    player.sendMessage(Chat.format(Message.VILLAGE_UNCLAIM_OTHER.toString()));
-                }
-            }
-        } else {
+        if (village == null) {
             player.sendMessage(Chat.format(Message.VILLAGE_NULL.toString()));
         }
+        VillageMember villageMember = village.getMember(player.getUniqueId());
+        if (!villageManager.hasPermission(VillagePermission.UNCLAIM_LAND, village, villageMember.getUniqueId())) {
+            return;
+        }
+        Village tempVillage = villageManager.getVillage(Objects.requireNonNull(Bukkit.getWorld(world)).getChunkAt(x, y));
+        if (tempVillage != village) {
+            player.sendMessage(Chat.format(Message.VILLAGE_UNCLAIM_OTHER.toString()));
+            return;
+        }
+        if (village.getVillageClaims().size() < 1) {
+            player.sendMessage(Chat.format(Message.VILLAGE_UNCLAIM_ONE.toString()));
+        }
+
+        UnClaimVillageEvent chunkEvent = new UnClaimVillageEvent(village, null, player);
+        Bukkit.getServer().getPluginManager().callEvent(chunkEvent);
+
+        if (chunkEvent.isCancelled()) return;
+
+        VillageClaim villageClaim = villageManager.getClaim(village, player.getLocation().getChunk());
+        village.remove(villageClaim);
+        ParticleSpawn.particleTusc(player, player.getLocation().getChunk(), ParticleTip.UN_CLAIM);
+        player.sendMessage(Chat.format(Message.VILLAGE_UNCLAIM.toString()));
+
+        VillagePlayer landPlayer = villageManager.getVillagePlayer(player);
+        landPlayer.setCurrentLand(null);
+
     }
 
     @Subcommand("claim")
@@ -126,9 +135,22 @@ public class ClaimVillageCommand extends BaseCommand {
             }
         }
 
+        if (ConfigVillage.NEARBY_CHUNKS) {
+            boolean x = false;
+            if (village == villageManager.getVillage(player.getLocation().add(16, 0, 0).getChunk())) x = true;
+            if (village == villageManager.getVillage(player.getLocation().add(-16, 0, 0).getChunk())) x = true;
+            if (village == villageManager.getVillage(player.getLocation().add(0, 0, 16).getChunk())) x = true;
+            if (village == villageManager.getVillage(player.getLocation().add(0, 0, -16).getChunk())) x = true;
+
+            if (!x) {
+                player.sendMessage(Chat.format(Message.VILLAGE_NEARBY_CHUNKS.toString()));
+                return;
+            }
+        }
+
 
         if (ConfigVillage.ECONOMY_ENABLE && EconomyBridge.hasValidEconomy()) {
-            if (EconomyBridge.hasMoney(player, ConfigVillage.CLAIM_MONEY_TAKE)){
+            if (EconomyBridge.hasMoney(player, ConfigVillage.CLAIM_MONEY_TAKE)) {
                 EconomyBridge.takeMoney(player, ConfigVillage.CLAIM_MONEY_TAKE);
             } else {
                 Chat.sendTranslation(player, true, Message.ECONOMY_CLAIM_VILLAGE.toString(), new EconomyReplacements(ConfigVillage.CLAIM_MONEY_TAKE));
@@ -136,10 +158,20 @@ public class ClaimVillageCommand extends BaseCommand {
             }
         }
 
+
+        ClaimVillageEvent chunkEvent = new ClaimVillageEvent(village, chunk, player);
+        Bukkit.getServer().getPluginManager().callEvent(chunkEvent);
+
+        if (chunkEvent.isCancelled()) return;
+
         VillageClaim villageClaim = new VillageClaim(chunk.getWorld().getName(), chunk.getX(), chunk.getZ());
         village.add(villageClaim);
         ParticleSpawn.particleTusc(player, player.getLocation().getChunk(), ParticleTip.CLAIM);
         player.sendMessage(Chat.format(Message.VILLAGE_CLAIM.toString().replace("{0}", villageClaim.toString())));
+
+        VillagePlayer landPlayer = villageManager.getVillagePlayer(player);
+        landPlayer.setCurrentLand(village);
+
     }
 
     @Subcommand("create")
@@ -177,7 +209,7 @@ public class ClaimVillageCommand extends BaseCommand {
         }
 
         if (ConfigVillage.ECONOMY_ENABLE && EconomyBridge.hasValidEconomy()) {
-            if (EconomyBridge.hasMoney(player, ConfigVillage.CREATE_MONEY_TAKE)){
+            if (EconomyBridge.hasMoney(player, ConfigVillage.CREATE_MONEY_TAKE)) {
                 EconomyBridge.takeMoney(player, ConfigVillage.CREATE_MONEY_TAKE);
             } else {
                 Chat.sendTranslation(player, true, Message.ECONOMY_CREATE_VILLAGE.toString(), new EconomyReplacements(ConfigVillage.CREATE_MONEY_TAKE));
@@ -186,8 +218,8 @@ public class ClaimVillageCommand extends BaseCommand {
         }
 
 
-        // village add description
-        village = new Village(args, ConfigVillage.DEFAULT_TITLE, player.getUniqueId());
+        // village create
+        village = new Village(args, ConfigVillage.DEFAULT_TITLE, player.getUniqueId(), villageManager.generateUUID());
         // village roles add
         village.setRoles(ConfigRole.VILLAGES_DEFAULT_ROLES);
         // village add global flags
@@ -201,10 +233,18 @@ public class ClaimVillageCommand extends BaseCommand {
         // set home village
         village.setLocation(player.getLocation());
         // register village
+
+        CreateVillageEvent chunkEvent = new CreateVillageEvent(village,chunk,player);
+        Bukkit.getServer().getPluginManager().callEvent(chunkEvent);
+
+        if(chunkEvent.isCancelled()) return;
+
         villageManager.add(village);
         player.sendMessage(Chat.format(Message.VILLAGE_CREATE.toString().replace("{0}", village.getName())));
-
         ParticleSpawn.particleTusc(player, player.getLocation().getChunk(), ParticleTip.CLAIM);
+
+        VillagePlayer landPlayer = villageManager.getVillagePlayer(player);
+        landPlayer.setCurrentLand(village);
     }
 
     @Subcommand("disband")

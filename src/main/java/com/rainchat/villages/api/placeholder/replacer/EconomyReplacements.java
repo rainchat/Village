@@ -2,7 +2,6 @@ package com.rainchat.villages.api.placeholder.replacer;
 
 import com.rainchat.rainlib.placeholder.BaseReplacements;
 import com.rainchat.villages.Villages;
-import com.rainchat.villages.data.village.VillageClaim;
 import org.bukkit.entity.Player;
 
 public class EconomyReplacements extends BaseReplacements<Player> {

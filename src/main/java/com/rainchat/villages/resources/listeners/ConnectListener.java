@@ -1,8 +1,9 @@
 package com.rainchat.villages.resources.listeners;
 
-import com.rainchat.villages.Villages;
 import com.rainchat.villages.data.village.Village;
+import com.rainchat.villages.data.village.VillagePlayer;
 import com.rainchat.villages.managers.VillageManager;
+import org.bukkit.Chunk;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -13,18 +14,30 @@ public class ConnectListener implements Listener {
 
     private final VillageManager villageManager;
 
-    public ConnectListener(Villages villages) {
-        this.villageManager = villages.getVillageManager();
+    public ConnectListener(VillageManager villageManager) {
+        this.villageManager = villageManager;
     }
 
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         Village village = villageManager.getVillage(event.getPlayer());
+
+
+
         if (village != null) {
             villageManager.updateLastActive(village, System.currentTimeMillis());
         }
 
+        VillagePlayer landPlayer = villageManager.getVillagePlayer(event.getPlayer());
+        Village fromLand = landPlayer.getCurrentVillage();
+
+        Chunk toChunk = event.getPlayer().getLocation().getChunk();
+        Village toLand = villageManager.getVillage(toChunk);
+
+        if (village != null) {
+            landPlayer.setCurrentLand(village);
+        }
     }
 
     @EventHandler
@@ -33,6 +46,8 @@ public class ConnectListener implements Listener {
         if (village != null) {
             villageManager.updateLastActive(village, System.currentTimeMillis());
         }
+
+        villageManager.removeVillagePlayer(event.getPlayer());
     }
 
 

@@ -1,6 +1,7 @@
 package com.rainchat.villages.utilities.general;
 
 import com.rainchat.rainlib.utils.Color;
+import com.rainchat.villages.api.placeholder.replacer.CustomPlaceholderReplacements;
 import com.rainchat.villages.managers.FileManager;
 import org.bukkit.configuration.file.FileConfiguration;
 
@@ -62,6 +63,7 @@ public enum Message {
     VILLAGE_NO_EXISTS("Messages.village-no-exists", "A village named &b%arg_2% &7does not exist."),
     VILLAGE_ADMIN_UNCLAIM_ONE("Messages.village-admin-unclaim-one", "'&7You can''t unclaim because this village have only one land.'"),
     VILLAGE_ADMIN_ENABLED("Messages.village-admin-enabled", "Admin mode: &aenabled"),
+    VILLAGE_ADMIN_ADD_CLAIMS("Messages.village-admin-add-claims", "You have successfully added a claims to village"),
     VILLAGE_ADMIN_NULL("Messages.village-admin-null", "No village exists at your current location."),
     VILLAGE_ADMIN_UNCLAIM("Messages.village-admin-unclaim", "Successfully unclaimed land at &b{0} &7from &b{1}&7."),
     VILLAGE_ADMIN_DISABLED("Messages.village-admin-disabled", "Admin mode: &cdisabled"),
@@ -100,6 +102,8 @@ public enum Message {
     VILLAGE_SUB_CLAIM_REMOVE("Messages.village-sub-claim-remove", "&7Subclaim &e%subclaim_name% &7successfully deleted "),
     VILLAGE_SUB_CLAIM_ADD_MEMBER("Messages.village-sub-claim-add-member", "&7The player was successfully added to the subclaim"),
     VILLAGE_SUB_CLAIM("Messages.village-sub-claim", "You have claimed new subclaim whith name &b%subclaim_name%"),
+    VILLAGE_NEARBY_CHUNKS("Messages.village-nearby-chunks", "Your village is too far from this &7chunk"),
+
 
     WORLDGUARD_CLAIM("Messages.world-guard", "You can't claim in a worldguard region."),
     WORLDGUARD_CREATE("Messages.world-guard", "You can't create land in a worldguard region."),
@@ -179,7 +183,7 @@ public enum Message {
             }
         }
 
-        return Color.parseHexString(message);
+        return Color.parseHexString(Chat.translateRaw(message,new CustomPlaceholderReplacements()));
     }
 
     public String getMessage() {

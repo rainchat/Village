@@ -33,7 +33,7 @@ public class EconomyBridge {
             return false;
         }
         economy = rsp.getProvider();
-        return economy != null;
+        return true;
     }
 
     public static boolean hasValidEconomy() {
@@ -56,11 +56,7 @@ public class EconomyBridge {
 
         double balance = economy.getBalance(player.getName(), player.getWorld().getName());
 
-        if (balance < minimum) {
-            return false;
-        } else {
-            return true;
-        }
+        return !(balance < minimum);
     }
 
     /**

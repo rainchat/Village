@@ -1,6 +1,8 @@
 package com.rainchat.villages.utilities.general;
 
+import com.cryptomorin.xseries.SkullUtils;
 import com.rainchat.rainlib.placeholder.PlaceholderSupply;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.enchantments.Enchantment;
@@ -11,11 +13,13 @@ import org.bukkit.inventory.meta.SkullMeta;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class Item {
 
     private String name;
+    private String skull_texture;
     private Material material;
     private short durability;
     private String[] lore;
@@ -47,6 +51,11 @@ public class Item {
 
     public Item material(Material material) {
         this.material = material;
+        return this;
+    }
+
+    public Item textureSkull(String skull_texture) {
+        this.skull_texture = skull_texture;
         return this;
     }
 
@@ -82,6 +91,17 @@ public class Item {
         return this;
     }
 
+    public static ItemStack skullTextured(String base64) {
+        UUID id = UUID.nameUUIDFromBytes(base64.getBytes());
+        int less = (int) id.getLeastSignificantBits();
+        int most = (int) id.getMostSignificantBits();
+        return Bukkit.getUnsafe().modifyItemStack(
+                new ItemStack(Material.PLAYER_HEAD),
+                "{SkullOwner:{Id:[I;" + (less * most) + "," + (less >> 23) + "," + (most / less) + "," + (most * 8731) + "],Properties:{textures:[{Value:\"" + base64 + "\"}]}}}"
+        );
+
+    }
+
     public ItemStack buildPlayer(OfflinePlayer offlinePlayer) {
         ItemStack itemStack = new ItemStack(Material.PLAYER_HEAD);
         SkullMeta itemMeta = (SkullMeta) itemStack.getItemMeta();
@@ -96,7 +116,13 @@ public class Item {
 
     public ItemStack build() {
         if (material == null) return null;
-        ItemStack itemStack = new ItemStack(material);
+        ItemStack itemStack;
+        if (skull_texture != null) {
+            itemStack = skullTextured(skull_texture);
+        } else {
+            itemStack = new ItemStack(material);
+        }
+
         ItemMeta itemMeta = itemStack.getItemMeta();
         if (itemMeta == null) return null;
         if (durability >= 0) itemStack.setDurability(durability);
@@ -110,10 +136,15 @@ public class Item {
         return itemStack;
     }
 
-
     public ItemStack build(PlaceholderSupply<?>... replacementSource) {
         if (material == null) return null;
-        ItemStack itemStack = new ItemStack(material);
+        ItemStack itemStack;
+        if (skull_texture != null) {
+            itemStack = skullTextured(skull_texture);
+        } else {
+            itemStack = new ItemStack(material);
+        }
+
         ItemMeta itemMeta = itemStack.getItemMeta();
         if (itemMeta == null) return null;
         if (durability >= 0) itemStack.setDurability(durability);

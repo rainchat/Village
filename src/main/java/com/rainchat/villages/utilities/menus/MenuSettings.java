@@ -1,5 +1,6 @@
 package com.rainchat.villages.utilities.menus;
 
+import com.cryptomorin.xseries.XMaterial;
 import com.rainchat.villages.utilities.general.MathUtil;
 import com.rainchat.villages.utilities.general.ServerLog;
 import org.bukkit.Material;
@@ -55,9 +56,12 @@ public class MenuSettings {
             if (s.isString(MATERIAL)) {
                 itemdata
                         .name(s.getString(NAME))
-                        .material(Material.valueOf(s.getString(MATERIAL).toUpperCase()));
+                        .material(XMaterial.matchXMaterial(s.getString(MATERIAL).toUpperCase()).get().parseMaterial());
                 if (s.isInt(MODEL_DATE)) {
                     itemdata.setCustomModelDate(s.getInt(MODEL_DATE));
+                }
+                if (s.isSet(SKULL_TEXTURE)) {
+                    itemdata.textureSkull(s.getString(SKULL_TEXTURE));
                 }
             } else {
                 //THROW ERROR
@@ -76,12 +80,15 @@ public class MenuSettings {
         if (file.isString("Menu-settings.fill-items." + MATERIAL)) {
             feelItem
                     .name(file.getString("Menu-settings.fill-items." + NAME))
-                    .material(Material.valueOf(file.getString("Menu-settings.fill-items." + MATERIAL).toUpperCase()));
+                    .material(XMaterial.matchXMaterial(file.getString("Menu-settings.fill-items." + MATERIAL).toUpperCase()).get().parseMaterial());
             if (file.isInt("Menu-settings.fill-items." + MODEL_DATE)) {
                 feelItem.setCustomModelDate(file.getInt("Menu-settings.fill-items." + MODEL_DATE));
             }
             if (file.isList("Menu-settings.fill-items." + LORE)) {
                 feelItem.lore(file.getStringList("Menu-settings.fill-items." + LORE));
+            }
+            if (file.isString("Menu-settings.fill-items." + SKULL_TEXTURE)) {
+                feelItem.textureSkull(file.getString("Menu-settings.fill-items." + SKULL_TEXTURE));
             }
         } else {
             feelItem = null;
@@ -102,7 +109,7 @@ public class MenuSettings {
         if (file.isString("Pagination-items." + NAME)) {
             paginationItem.name(file.getString("Pagination-items." + NAME));
             if (file.isString("Pagination-items." + MATERIAL)) {
-                paginationItem.material(Material.valueOf(file.getString("Pagination-items." + MATERIAL).toUpperCase()));
+                paginationItem.material(XMaterial.matchXMaterial(file.getString("Pagination-items." + MATERIAL).toUpperCase()).get().parseMaterial());
             }
             if (file.isInt("Pagination-items." + MODEL_DATE)) {
                 paginationItem.setCustomModelDate(file.getInt("Pagination-items." + MODEL_DATE));
@@ -113,6 +120,9 @@ public class MenuSettings {
             if (file.isList("Pagination-items." + ACTIONS)) {
                 List<String> stringList = file.getStringList("Pagination-items." + ACTIONS);
                 paginationItem.setCommands(stringList);
+            }
+            if (file.isString("Pagination-items." + SKULL_TEXTURE)) {
+                feelItem.textureSkull(file.getString("Pagination-items." + SKULL_TEXTURE));
             }
             if (file.isString("Pagination-items." + TYPE)) {
                 paginationItem.setType(file.getString("Pagination-items." + TYPE));

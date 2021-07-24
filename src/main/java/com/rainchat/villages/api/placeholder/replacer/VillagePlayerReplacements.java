@@ -21,7 +21,7 @@ public class VillagePlayerReplacements extends BaseReplacements<Player> {
 
         this.player = player;
         this.plugin = Villages.getInstance();
-        this.islandManager = plugin.getVillageManager();
+        this.islandManager = Villages.getAPI().getVillageManage();
     }
 
 

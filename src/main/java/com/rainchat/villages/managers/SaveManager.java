@@ -14,8 +14,8 @@ public class SaveManager {
 
     private final VillageManager villageManager;
 
-    public SaveManager(Villages villages) {
-        villageManager = villages.getVillageManager();
+    public SaveManager(VillageManager villages) {
+        villageManager = villages;
     }
 
 

@@ -1,0 +1,17 @@
+disable-flags:
+  - flag_name
+  - test
+
+flag-items:
+  PVP:
+    name: '&ePvP'
+    material: 'Diamond_sword'
+  EXPLOSIONS:
+    name: '&cExplosions'
+    material: 'Tnt'
+  DAMAGE_ANIMALS:
+    name: '&aDamage Animals'
+    material: 'Leather'
+  FIRE_SPREAD:
+    name: '&4Fire Spread'
+    material: 'blaze_powder'

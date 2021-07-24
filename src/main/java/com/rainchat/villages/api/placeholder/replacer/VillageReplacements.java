@@ -39,7 +39,10 @@ public class VillageReplacements extends BaseReplacements<Player> {
                     return String.valueOf(village.getVillageMembers().size());
                 case "claims":
                     return String.valueOf(village.getVillageClaims().size());
+                case "max_claims":
+                    return String.valueOf(Villages.getAPI().getVillageManage().checkMaxClaims(village));
             }
+
         }
         return "";
     }

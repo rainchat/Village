@@ -17,7 +17,7 @@ import com.rainchat.villages.utilities.general.Message;
 import org.bukkit.entity.Player;
 
 
-@CommandAlias("v|village|villages")
+@CommandAlias("%village")
 public class PlayerVillageCommand extends BaseCommand {
 
     private final VillageManager villageManager;

@@ -4,7 +4,6 @@
 # Discord: https://discord.gg/FmyGDaeFTE
 # Config Guide: https://rainchat.gitbook.io/villages/villages-help/villages
 ######################################################################################
-# This file was generated on version 1.5.0
 # Plugin made by rain_chat
 # Fork of the original Villages (by StefTheDev)
 ######################################################################################
@@ -20,13 +19,19 @@ Settings-Claim:
   default-title-description: 'A peaceful settlement!'
   # RolePlay/Protect/
   protect-mode: Protect
-  default-claim-limit: 6
-  default-claim-per-member: 2
+  nearby-chunks: false
+  default-claim-limit: 8
+  default-claim-per-member: 3
   enabled-worlds:
-    - world123
+    - world
   # Removes all inactive villages (time in days)
   expiration:
     time: 5
+
+Placeholders:
+    enable-flag: '&aenable'
+    disable-flag:  '&cdisable'
+    exapmle-color: '<#12345>'
 
 Economy:
   create-money-take: 5000

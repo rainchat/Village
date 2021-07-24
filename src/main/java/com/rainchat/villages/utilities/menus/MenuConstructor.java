@@ -6,8 +6,6 @@ import com.rainchat.inventoryapi.inventory.invs.Pagination;
 import com.rainchat.inventoryapi.inventory.item.ClickableItem;
 import com.rainchat.villages.api.placeholder.replacer.VillageReplacements;
 import com.rainchat.villages.data.village.Village;
-import com.rainchat.villages.utilities.Executor;
-import com.rainchat.villages.utilities.SpecialActions;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;

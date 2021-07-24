@@ -7,32 +7,26 @@ Menu-settings:
     name: "&7&l+"
     madel-date: 11
 
-  size: 5
+  size: 3
 
 
 Menu-items:
 
-  main-item:
-    slot: 4
-    material: Writable_book
-    name: "&2Global permissions"
+  info:
+    slot: 10
+    material: Book
+    name: "&6Info"
     lore:
-      - "&7click to open"
+      - "&7Village name: &6%village_name%"
+      - "&7Owner: &e%village_owner%"
+      - "&7Members: &a%village_members%"
+      - "&7Claims: &7%village_claims%&e/&7%village_max_claims%"
     actions:
-      - "[menu-open]GlobalPermission"
+      - ""
 
-  page-previous:
-    slot: 20
-    material: Nether_Star
-    name: "&9Member menu"
-    lore:
-      - "&7click to open"
-    actions:
-      - "[menu-open]MembersMenu"
-
-  back:
-    slot: 22
-    material: Chest
+  claims:
+    slot: 12
+    material: Grass_block
     name: "&aClaims menu"
     lore:
       - "&7click to open"
@@ -40,7 +34,7 @@ Menu-items:
       - "[menu-open]ClaimMenu"
 
   subclaims-menu:
-    slot: 24
+    slot: 13
     material: Oak_sign
     name: "&eSubClaims"
     lore:
@@ -48,9 +42,26 @@ Menu-items:
     actions:
       - "[menu-open]SubClaimMenuPermission"
 
+  global-perms:
+    slot: 14
+    material: Oak_door
+    name: "&2Global permissions"
+    lore:
+      - "&7click to open"
+    actions:
+      - "[menu-open]GlobalPermission"
+
+  page-previous:
+    slot: 15
+    material: Chest
+    name: "&9Member menu"
+    lore:
+      - "&7click to open"
+    actions:
+      - "[menu-open]MembersMenu"
 
   role-menu:
-    slot: 40
+    slot: 16
     material: Emerald
     name: "&6Roles Menu"
     lore:

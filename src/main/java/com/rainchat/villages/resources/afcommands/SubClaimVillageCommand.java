@@ -21,7 +21,7 @@ import org.bukkit.entity.Player;
 
 import java.util.Set;
 
-@CommandAlias("v|village|villages")
+@CommandAlias("%village")
 public class SubClaimVillageCommand extends BaseCommand {
 
     private final VillageManager villageManager;

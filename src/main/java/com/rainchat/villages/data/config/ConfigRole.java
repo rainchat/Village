@@ -1,6 +1,5 @@
 package com.rainchat.villages.data.config;
 
-import com.rainchat.villages.data.enums.VillageGlobalPermission;
 import com.rainchat.villages.data.enums.VillagePermission;
 import com.rainchat.villages.data.village.VillageRole;
 import com.rainchat.villages.managers.FileManager;
@@ -15,7 +14,7 @@ public class ConfigRole {
     public static String DEFAULT_ROLE;
     public static String OWNER_ROLE;
     public static Set<VillageRole> VILLAGES_DEFAULT_ROLES;
-    public static Set<VillageGlobalPermission> VILLAGES_GLOBAL_PERMISSIONS;
+    public static Set<String> VILLAGES_GLOBAL_PERMISSIONS;
 
 
     public static void setup() {
@@ -40,7 +39,7 @@ public class ConfigRole {
         //VILLAGES_GLOBAL_PERMISSIONS
         for (String permission : roleConfig.getStringList("VillageGlobalFlags")) {
             try {
-                VILLAGES_GLOBAL_PERMISSIONS.add(VillageGlobalPermission.valueOf(permission.toUpperCase()));
+                VILLAGES_GLOBAL_PERMISSIONS.add(permission);
             } catch (Exception ignored) {
             }
         }

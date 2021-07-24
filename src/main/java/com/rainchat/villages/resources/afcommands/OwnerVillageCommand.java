@@ -20,7 +20,7 @@ import org.bukkit.entity.Player;
 import java.util.Objects;
 
 
-@CommandAlias("v|village|villages")
+@CommandAlias("%village")
 public class OwnerVillageCommand extends BaseCommand {
 
     private final VillageManager villageManager;

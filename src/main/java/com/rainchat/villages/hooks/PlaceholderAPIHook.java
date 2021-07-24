@@ -11,9 +11,9 @@ public class PlaceholderAPIHook extends PlaceholderExpansion {
     private final Villages villages;
     private final VillageManager villageManager;
 
-    public PlaceholderAPIHook(Villages villages) {
+    public PlaceholderAPIHook(Villages villages, VillageManager villageManager) {
         this.villages = villages;
-        this.villageManager = villages.getVillageManager();
+        this.villageManager = villageManager;
     }
 
     @Override

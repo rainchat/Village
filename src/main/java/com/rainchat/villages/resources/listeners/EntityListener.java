@@ -1,19 +1,15 @@
 package com.rainchat.villages.resources.listeners;
 
-import com.rainchat.villages.Villages;
-import com.rainchat.villages.data.enums.VillageGlobalPermission;
 import com.rainchat.villages.data.village.Village;
+import com.rainchat.villages.managers.FlagManager;
 import com.rainchat.villages.managers.VillageManager;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.ItemFrame;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
-import org.bukkit.event.block.BlockExplodeEvent;
+import org.bukkit.event.block.*;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
@@ -26,8 +22,8 @@ public class EntityListener implements Listener {
 
     private final VillageManager villageManager;
 
-    public EntityListener(Villages villages) {
-        this.villageManager = villages.getVillageManager();
+    public EntityListener(VillageManager villageManager) {
+        this.villageManager = villageManager;
     }
 
     @EventHandler
@@ -38,7 +34,7 @@ public class EntityListener implements Listener {
             if (village == null) {
                 continue;
             }
-            if (village.hasPermission(VillageGlobalPermission.EXPLOSIONS, block.getLocation())) {
+            if (village.hasPermission("EXPLOSIONS", block.getLocation())) {
                 event.blockList().remove(block);
                 event.setCancelled(true);
                 return;
@@ -46,6 +42,31 @@ public class EntityListener implements Listener {
         }
 
     }
+
+    @EventHandler
+    public void onDamageAnimal(EntityDamageByEntityEvent event) {
+        if (event.getEntity() instanceof Animals && event.getDamager() instanceof Player) {
+            Entity entity = event.getEntity();
+            Village entityVillage = villageManager.getVillage(entity.getLocation().getChunk());
+
+            Player player2 = (Player) event.getDamager();
+            Village otherVillage = villageManager.getVillage(player2);
+
+            if (villageManager.hasAdminMode(player2.getUniqueId())) return;
+
+            if (entityVillage != null) {
+                if (otherVillage == entityVillage) {
+                    return;
+                }
+                if (entityVillage.hasPermission("DAMAGE_ANIMALS", entity.getLocation())) {
+                    event.setCancelled(true);
+                }
+            }
+
+        }
+
+    }
+
 
     @EventHandler
     public void onDamage(EntityDamageByEntityEvent event) {
@@ -59,12 +80,12 @@ public class EntityListener implements Listener {
             if (villageManager.hasAdminMode(player2.getUniqueId())) return;
 
             if (entityVillage != null) {
-                if (entityVillage.hasPermission(VillageGlobalPermission.PVP, player1.getLocation())) {
+                if (entityVillage.hasPermission("PVP", player1.getLocation())) {
                     event.setCancelled(true);
                 }
             }
             if (otherVillage != null) {
-                if (otherVillage.hasPermission(VillageGlobalPermission.PVP, player2.getLocation())) {
+                if (otherVillage.hasPermission("PVP", player2.getLocation())) {
                     event.setCancelled(true);
                 }
             }
@@ -82,7 +103,7 @@ public class EntityListener implements Listener {
             if (village == null) {
                 continue;
             }
-            if (village.hasPermission(VillageGlobalPermission.EXPLOSIONS, block.getLocation())) {
+            if (village.hasPermission("EXPLOSIONS", block.getLocation())) {
                 event.setCancelled(true);
                 return;
             }
@@ -92,19 +113,8 @@ public class EntityListener implements Listener {
 
     @EventHandler
     public void itemFrameBreak(HangingBreakByEntityEvent event) {
-        Village village = villageManager.getVillage(event.getEntity().getLocation().getChunk());
-        if (village == null) {
-            return;
-        }
-        if (event.getRemover() instanceof Player) {
-            Player player = (Player) event.getRemover();
-            if (!village.hasMember(player)) {
-                event.setCancelled(true);
-
-            }
-            return;
-        }
         event.setCancelled(true);
+
     }
 
     @EventHandler
@@ -175,25 +185,25 @@ public class EntityListener implements Listener {
 
     @EventHandler
     public void ArmorStandDestroy(EntityDamageByEntityEvent event) {
-        if (!(event.getEntity() instanceof LivingEntity)) {
+        if (!(event.getEntity() instanceof ItemFrame) && !(event.getEntity() instanceof ArmorStand)) {
+            return;
+        }
+        if (!(event.getDamager() instanceof Player)) {
             return;
         }
 
-        final LivingEntity livingEntity = (LivingEntity) event.getEntity();
-        if (!livingEntity.getType().equals(EntityType.ARMOR_STAND)) {
+        Player player = (Player) event.getDamager();
+        Village village = villageManager.getVillage(event.getEntity().getLocation().getChunk());
+
+        if (village == null) {
+            return;
+        }
+        if (village.hasMember(player)) {
             return;
         }
 
-        if (event.getDamager() instanceof Player) {
-            Player player = (Player) event.getDamager();
-            Village village = villageManager.getVillage(livingEntity.getLocation().getChunk());
-            if (village == null) {
-                return;
-            }
-            if (!village.hasMember(player)) {
-                event.setCancelled(true);
-            }
-        }
+        event.setCancelled(true);
     }
+
 
 }

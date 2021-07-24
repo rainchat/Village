@@ -1,11 +1,12 @@
 package com.rainchat.villages.resources.listeners;
 
-import com.rainchat.villages.Villages;
 import com.rainchat.villages.data.enums.VillagePermission;
 import com.rainchat.villages.data.village.Village;
 import com.rainchat.villages.managers.VillageManager;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.ShulkerBox;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -19,8 +20,8 @@ public class PlayerListener implements Listener {
 
     private final VillageManager villageManager;
 
-    public PlayerListener(Villages villages) {
-        this.villageManager = villages.getVillageManager();
+    public PlayerListener(VillageManager villageManager) {
+        this.villageManager = villageManager;
     }
 
     @EventHandler(priority = EventPriority.HIGH)
@@ -57,7 +58,7 @@ public class PlayerListener implements Listener {
             }
         }
 
-        if (material == Material.SHULKER_BOX) {
+        if (block.getState() instanceof ShulkerBox) {
             if (playerVillage == currentVillage) {
                 if (villageManager.hasPermission(VillagePermission.SHULKER_ACCESS, playerVillage, player, block.getLocation()))
                     event.setCancelled(true);

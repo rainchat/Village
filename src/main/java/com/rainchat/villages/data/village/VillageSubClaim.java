@@ -1,7 +1,6 @@
 package com.rainchat.villages.data.village;
 
 import com.rainchat.villages.data.config.ConfigRole;
-import com.rainchat.villages.data.enums.VillageGlobalPermission;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -21,7 +20,7 @@ public class VillageSubClaim {
     private final int maxY;
     private final int minZ;
     private final int maxZ;
-    private final Set<VillageGlobalPermission> villagePermissions;
+    private final Set<String> villagePermissions;
     private final Set<UUID> members;
     private String role;
 
@@ -43,11 +42,11 @@ public class VillageSubClaim {
         maxZ = Math.max(z1, z2);
     }
 
-    public void add(VillageGlobalPermission villageGlobalPermission) {
+    public void add(String villageGlobalPermission) {
         villagePermissions.add(villageGlobalPermission);
     }
 
-    public void add(Set<VillageGlobalPermission> villageGlobalPermissions) {
+    public void add(Set<String> villageGlobalPermissions) {
         villagePermissions.addAll(villageGlobalPermissions);
     }
 
@@ -103,11 +102,11 @@ public class VillageSubClaim {
         this.role = role;
     }
 
-    public boolean hasPermission(VillageGlobalPermission villageGlobalPermission) {
+    public boolean hasPermission(String villageGlobalPermission) {
         return villagePermissions.contains(villageGlobalPermission);
     }
 
-    public void remove(VillageGlobalPermission villageGlobalPermission) {
+    public void remove(String villageGlobalPermission) {
         villagePermissions.remove(villageGlobalPermission);
     }
 

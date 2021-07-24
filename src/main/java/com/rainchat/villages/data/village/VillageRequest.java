@@ -1,5 +1,6 @@
 package com.rainchat.villages.data.village;
 
+import com.rainchat.villages.api.events.DisbandVillageEvent;
 import com.rainchat.villages.data.config.ConfigRole;
 import com.rainchat.villages.managers.VillageManager;
 import com.rainchat.villages.utilities.general.Chat;
@@ -67,7 +68,17 @@ public class VillageRequest {
     public void complete(VillageManager villageManager) {
         switch (villageRequestAction) {
             case DISBAND: {
+                Player player = Bukkit.getPlayer(uuid);
+
+                if (player == null) return;
+
                 Bukkit.broadcastMessage(Chat.format(Message.DISBAND.toString().replace("{0}", village.getName())));
+
+                DisbandVillageEvent chunkEvent = new DisbandVillageEvent(village, player);
+                Bukkit.getServer().getPluginManager().callEvent(chunkEvent);
+
+                if (chunkEvent.isCancelled()) return;
+
                 villageManager.remove(village);
             }
             break;

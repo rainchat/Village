@@ -1,27 +1,32 @@
-package com.rainchat.villages.utilities;
+package com.rainchat.villages.utilities.menus;
 
 
+import com.cryptomorin.xseries.XMaterial;
 import com.rainchat.inventoryapi.inventory.item.ClickableItem;
+import com.rainchat.villages.Villages;
 import com.rainchat.villages.api.placeholder.replacer.*;
-import com.rainchat.villages.data.enums.VillageGlobalPermission;
+import com.rainchat.villages.utilities.menus.Executor;
+import com.rainchat.villages.data.config.ConfigFlags;
 import com.rainchat.villages.data.enums.VillagePermission;
 import com.rainchat.villages.data.village.*;
+import com.rainchat.villages.managers.FlagManager;
 import com.rainchat.villages.utilities.general.Chat;
 import com.rainchat.villages.utilities.general.Item;
 import com.rainchat.villages.utilities.menus.MenuConstructor;
 import com.rainchat.villages.utilities.menus.PaginationItem;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class SpecialActions {
 
     public Village village;
+    public FlagManager flagManager;
     public PaginationItem paginationItem;
     public MenuConstructor menuConstructor;
     public Player player;
@@ -32,6 +37,7 @@ public class SpecialActions {
         this.village = village;
         this.menuConstructor = menuConstructor;
         this.player = player;
+        this.flagManager = Villages.getAPI().getFlagManager();
     }
 
 
@@ -129,19 +135,32 @@ public class SpecialActions {
 
     public void globalPermissions() {
         List<ClickableItem> clickableItemList = new ArrayList<>();
-        for (VillageGlobalPermission villageGlobalPermission : VillageGlobalPermission.values()) {
+        Player player = Bukkit.getPlayer(village.getOwner());
+
+        if (player == null) return;
+
+        for (String villageGlobalPermission : flagManager.getStringFlags()) {
+
             List<String> listCommands = new ArrayList<>(paginationItem.getCommands());
 
-            ClickableItem item = ClickableItem.empty(permissionGlobal(villageGlobalPermission, paginationItem, village.hasPermission(villageGlobalPermission)));
+
+            AtomicReference<FlagReplacements> flagReplacements = new AtomicReference<>(new FlagReplacements(flagManager.getFlag(villageGlobalPermission), ConfigFlags.FLAG_ITEM.get(villageGlobalPermission), village.hasPermission(villageGlobalPermission)));
+
+
+            ClickableItem item = ClickableItem.empty(permissionGlobal(villageGlobalPermission, paginationItem, village.hasPermission(villageGlobalPermission), flagReplacements.get()));
             item.setClick((event) ->
                     {
+                        if (!player.hasPermission("village.flag." + villageGlobalPermission)) return;
+
                         if (village.hasPermission(villageGlobalPermission)) {
                             village.remove(villageGlobalPermission);
                         } else {
                             village.add(villageGlobalPermission);
                         }
-                        event.getInventory().setItem(event.getSlot(), permissionGlobal(villageGlobalPermission, paginationItem, village.hasPermission(villageGlobalPermission)));
-                        item.setItem(permissionGlobal(villageGlobalPermission, paginationItem, village.hasPermission(villageGlobalPermission)));
+                        flagReplacements.set(new FlagReplacements(flagManager.getFlag(villageGlobalPermission), ConfigFlags.FLAG_ITEM.get(villageGlobalPermission), village.hasPermission(villageGlobalPermission)));
+
+                        event.getInventory().setItem(event.getSlot(), permissionGlobal(villageGlobalPermission, paginationItem, village.hasPermission(villageGlobalPermission), flagReplacements.get()));
+                        item.setItem(permissionGlobal(villageGlobalPermission, paginationItem, village.hasPermission(villageGlobalPermission), flagReplacements.get()));
                         new Executor(listCommands, player, village, menuConstructor).start();
                     }
             );
@@ -243,19 +262,34 @@ public class SpecialActions {
     public void subRegionGlobalPermission() {
         List<ClickableItem> clickableItemList = new ArrayList<>();
         VillageSubClaim villageSubClaim = village.getSubClaim(menuConstructor.parameter);
-        for (VillageGlobalPermission villageGlobalPermission : VillageGlobalPermission.values()) {
+
+        Player player = Bukkit.getPlayer(village.getOwner());
+
+        if (player == null) return;
+
+        for (String villageGlobalPermission : flagManager.getStringFlags()) {
+
+
             List<String> listCommands = new ArrayList<>(paginationItem.getCommands());
 
-            ClickableItem item = ClickableItem.empty(permissionGlobal(villageGlobalPermission, paginationItem, villageSubClaim.hasPermission(villageGlobalPermission)));
+            AtomicReference<FlagReplacements> flagReplacements = new AtomicReference<>(new FlagReplacements(flagManager.getFlag(villageGlobalPermission), ConfigFlags.FLAG_ITEM.get(villageGlobalPermission), village.hasPermission(villageGlobalPermission)));
+
+
+            ClickableItem item = ClickableItem.empty(permissionGlobal(villageGlobalPermission, paginationItem, villageSubClaim.hasPermission(villageGlobalPermission), flagReplacements.get()));
             item.setClick((event) ->
                     {
+                        if (!player.hasPermission("village.flag." + villageGlobalPermission)) return;
+
                         if (villageSubClaim.hasPermission(villageGlobalPermission)) {
                             villageSubClaim.remove(villageGlobalPermission);
                         } else {
                             villageSubClaim.add(villageGlobalPermission);
                         }
-                        event.getInventory().setItem(event.getSlot(), permissionGlobal(villageGlobalPermission, paginationItem, villageSubClaim.hasPermission(villageGlobalPermission)));
-                        item.setItem(permissionGlobal(villageGlobalPermission, paginationItem, villageSubClaim.hasPermission(villageGlobalPermission)));
+
+                        flagReplacements.set(new FlagReplacements(flagManager.getFlag(villageGlobalPermission), ConfigFlags.FLAG_ITEM.get(villageGlobalPermission), village.hasPermission(villageGlobalPermission)));
+
+                        event.getInventory().setItem(event.getSlot(), permissionGlobal(villageGlobalPermission, paginationItem, villageSubClaim.hasPermission(villageGlobalPermission), flagReplacements.get()));
+                        item.setItem(permissionGlobal(villageGlobalPermission, paginationItem, villageSubClaim.hasPermission(villageGlobalPermission), flagReplacements.get()));
 
                         new Executor(listCommands, player, village, menuConstructor).start();
                     }
@@ -318,28 +352,28 @@ public class SpecialActions {
     private ItemStack permission(VillagePermission villagePermission, PaginationItem paginationItem, boolean enabled) {
         Item item = new Item();
         if (enabled) {
-            item.material(Material.LIME_DYE);
+            item.material(XMaterial.LIME_DYE.parseMaterial());
             item.name(paginationItem.getName().replace("%Permission%", villagePermission.name()));
             item.lore(paginationItem.getLore());
         } else {
-            item.material(Material.GRAY_DYE);
+            item.material(XMaterial.GRAY_DYE.parseMaterial());
             item.name(paginationItem.getName().replace("%Permission%", villagePermission.name()));
             item.lore(paginationItem.getLore());
         }
         return item.build();
     }
 
-    private ItemStack permissionGlobal(VillageGlobalPermission villageGlobalPermission, PaginationItem paginationItem, boolean enabled) {
+    private ItemStack permissionGlobal(String villageGlobalPermission, PaginationItem paginationItem, boolean enabled, FlagReplacements flagReplacements) {
         Item item = new Item();
         if (enabled) {
-            item.material(Material.LIME_DYE);
-            item.name(paginationItem.getName().replace("%Permission%", villageGlobalPermission.name()));
+            item.material(XMaterial.valueOf(flagReplacements.getMaterial().toString()).parseMaterial());
+            item.name(paginationItem.getName().replace("%Permission%", villageGlobalPermission));
             item.lore(paginationItem.getLore());
         } else {
-            item.material(Material.GRAY_DYE);
-            item.name(paginationItem.getName().replace("%Permission%", villageGlobalPermission.name()));
+            item.material(XMaterial.GRAY_DYE.parseMaterial());
+            item.name(paginationItem.getName().replace("%Permission%", villageGlobalPermission));
             item.lore(paginationItem.getLore());
         }
-        return item.build();
+        return item.build(flagReplacements);
     }
 }

@@ -1,16 +1,17 @@
-package com.rainchat.villages.utilities;
+package com.rainchat.villages.utilities.menus;
 
 
 import com.rainchat.inventoryapi.InventoryAPI;
 import com.rainchat.rainlib.utils.Color;
 import com.rainchat.villages.Villages;
+import com.rainchat.villages.api.events.UnClaimVillageEvent;
 import com.rainchat.villages.data.village.Village;
 import com.rainchat.villages.hooks.PlaceholderAPIBridge;
 import com.rainchat.villages.managers.MenuManager;
-import com.rainchat.villages.managers.VillageManager;
 import com.rainchat.villages.utilities.general.Chat;
 import com.rainchat.villages.utilities.general.Message;
 import com.rainchat.villages.utilities.menus.MenuConstructor;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.List;
@@ -22,7 +23,6 @@ public class Executor {
     private final List<String> cmd;
     private final Player player;
     private final Village village;
-    private final VillageManager villageManager = Villages.getInstance().getVillageManager();
     private final MenuManager menuManager = MenuManager.getInstance();
     private final MenuConstructor menuConstructor;
 
@@ -80,6 +80,11 @@ public class Executor {
                 break;
             case "remove-claim":
                 if (village.getVillageClaims().size() > 1) {
+                    UnClaimVillageEvent chunkEvent = new UnClaimVillageEvent(village, null, player);
+                    Bukkit.getServer().getPluginManager().callEvent(chunkEvent);
+
+                    if (chunkEvent.isCancelled()) return;
+
                     village.removeClaim(action);
                     player.sendMessage(Chat.format(Message.VILLAGE_UNCLAIM.toString()));
                 } else {

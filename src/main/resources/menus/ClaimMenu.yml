@@ -19,7 +19,8 @@ Pagination-items:
   lore:
     - '&aclick to remove'
   actions:
-    - ""
+    - "[remove-claim]%claim_id%"
+    - "[menu-open]ClaimMenu"
 
 
 Menu-items:

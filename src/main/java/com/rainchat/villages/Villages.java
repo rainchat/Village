@@ -1,37 +1,30 @@
 package com.rainchat.villages;
 
-import co.aikar.commands.MessageType;
-import co.aikar.commands.PaperCommandManager;
-import com.google.gson.reflect.TypeToken;
 import com.rainchat.inventoryapi.InventoryAPI;
-import com.rainchat.villages.data.config.ConfigRole;
+import com.rainchat.villages.data.VillageExtension;
 import com.rainchat.villages.data.config.ConfigVillage;
-import com.rainchat.villages.data.village.Village;
-import com.rainchat.villages.hooks.*;
-import com.rainchat.villages.managers.FileManager;
-import com.rainchat.villages.managers.MenuManager;
-import com.rainchat.villages.managers.SaveManager;
-import com.rainchat.villages.managers.VillageManager;
-import com.rainchat.villages.resources.afcommands.*;
+import com.rainchat.villages.hooks.EconomyBridge;
+import com.rainchat.villages.hooks.PlaceholderAPIBridge;
+import com.rainchat.villages.hooks.PlaceholderAPIHook;
+import com.rainchat.villages.hooks.WorldGuardHook;
+import com.rainchat.villages.managers.ExtensionLoader;
 import com.rainchat.villages.resources.listeners.*;
-import com.rainchat.villages.utilities.general.Message;
-import org.bukkit.ChatColor;
+import com.rainchat.villages.utilities.general.ResourceLoader;
+import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.File;
 import java.util.Arrays;
-import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Villages extends JavaPlugin {
 
-    private static Villages instance;
-
-    private final FileManager fileManager = FileManager.getInstance();
-    private final MenuManager menuManager = MenuManager.getInstance();
-    private VillageManager villageManager;
     public static boolean WORLD_GUARD = false;
-
+    private static Villages instance;
+    private ResourceLoader resources;
+    private VillageImpl villageApi;
+    private static ExtensionLoader extLoader;
 
     public static Villages getInstance() {
         return instance;
@@ -41,100 +34,59 @@ public class Villages extends JavaPlugin {
         Villages.instance = instance;
     }
 
+    public static VillageImpl getAPI() {
+        return getInstance().villageApi;
+    }
+
+    public static ExtensionLoader getExpansions() {
+        return extLoader;
+    }
+
     public void onEnable() {
         instance = this;
+        villageApi = new VillageImpl(this);
+        resources = new ResourceLoader(this);
 
-        getLogger().info("Loading Village Data.");
-        villageManager = new VillageManager(this);
-        villageManager.load(new TypeToken<Set<Village>>() {
-        }.getType());
-
-        getLogger().info("Loading Save manager.");
-        SaveManager saveManager = new SaveManager(this);
-        saveManager.start();
-
-
-        // File manager
-        String languages = "/language";
-        String menu = "/menus";
-        fileManager.logInfo(false)
-                .registerCustomFilesFolder("/language")
-                .registerCustomFilesFolder("/menus")
-                .registerDefaultGenerateFiles("ClaimMenu.yml", "/menus", menu)
-                .registerDefaultGenerateFiles("GlobalPermission.yml", "/menus", menu)
-                .registerDefaultGenerateFiles("main.yml", "/menus", menu)
-                .registerDefaultGenerateFiles("MemberRoles.yml", "/menus", menu)
-                .registerDefaultGenerateFiles("MembersMenu.yml", "/menus", menu)
-                .registerDefaultGenerateFiles("RolePermission.yml", "/menus", menu)
-                .registerDefaultGenerateFiles("RolesMenu.yml", "/menus", menu)
-                .registerDefaultGenerateFiles("SubClaimMembers.yml", "/menus", menu)
-                .registerDefaultGenerateFiles("SubClaimMenuMembers.yml", "/menus", menu)
-                .registerDefaultGenerateFiles("SubClaimMenuPermission.yml", "/menus", menu)
-                .registerDefaultGenerateFiles("SubClaimMenuRole.yml", "/menus", menu)
-                .registerDefaultGenerateFiles("SubClaimPermissions.yml", "/menus", menu)
-                .registerDefaultGenerateFiles("SubClaimRole.yml", "/menus", menu)
-                .registerDefaultGenerateFiles("en_EN.yml", "/language", languages)
-                .registerDefaultGenerateFiles("ru_RU.yml", "/language", languages)
-                .registerDefaultGenerateFiles("it_IT.yml", "/language", languages)
-                .registerDefaultGenerateFiles("fr_FR.yml", "/language", languages)
-                .setup(this);
-        ConfigRole.setup();
-        ConfigVillage.setup();
-        registerMessages();
-
-        menuManager.setupMenus(villageManager);
-
-
-        // Command manager
-        PaperCommandManager manager = new PaperCommandManager(this);
-        manager.getCommandCompletions().registerCompletion("villages", c -> {
-            return villageManager.getVillages();
-        });
-        manager.getCommandCompletions().registerCompletion("menus", c -> {
-            return menuManager.getAllMenu();
-        });
-        manager.setFormat(MessageType.SYNTAX, ChatColor.GRAY, ChatColor.AQUA, ChatColor.DARK_AQUA);
-
-
-        manager.registerCommand(new AdminVillageCommand(villageManager, menuManager));
-        manager.registerCommand(new ClaimVillageCommand(villageManager, menuManager));
-        manager.registerCommand(new ListCommand(villageManager));
-        manager.registerCommand(new OwnerVillageCommand(villageManager, menuManager));
-        manager.registerCommand(new PlayerVillageCommand(villageManager, menuManager));
-        manager.registerCommand(new SubClaimVillageCommand(villageManager, menuManager));
+        InventoryAPI.setup(this);
 
         // register listeners and hooks
         registerProtectMode(ConfigVillage.CLAIM_GLOBAL_PROTECT_MODE);
-
         getLogger().info("Registered " + registerHooks() + " hook(s).");
 
-        InventoryAPI.setup(this);
+        // register expansions
+        extLoader = new ExtensionLoader(resources.getClassLoader(), new File(getDataFolder() + File.separator + "extension"));
+        for (VillageExtension villageExtension : extLoader.loadLocal()) {
+            villageExtension.init(this);
+        }
+
+        villageApi.getFlagManager().disableFlags();
     }
 
     private void registerProtectMode(String claim_mode) {
-        if (claim_mode.equals("PROTECT")) {
+        if (claim_mode.equalsIgnoreCase("PROTECT")) {
             getLogger().info("Registered " + registerListeners(
-                    new EntityListener(this),
-                    new PlayerListener(this),
-                    new VillageListener(this),
-                    new WorldListener(villageManager),
-                    new MoveEvent(this),
-                    new ConnectListener(this)
+                    new EntityListener(villageApi.getVillageManage()),
+                    new PlayerListener(villageApi.getVillageManage()),
+                    new BurnEvent(villageApi.getVillageManage()),
+                    new VillageListener(villageApi.getVillageManage()),
+                    new WorldListener(villageApi.getVillageManage()),
+                    new MoveEvent(villageApi.getVillageManage()),
+                    new ConnectListener(villageApi.getVillageManage())
             ) + " listener(s).");
-        } else if (claim_mode.equals("ROLEPLAY")) {
+        } else if (claim_mode.equalsIgnoreCase("ROLEPLAY")) {
             getLogger().info("Registered " + registerListeners(
-                    new MoveEvent(this),
-                    new WorldListener(villageManager),
-                    new ConnectListener(this)
+                    new MoveEvent(villageApi.getVillageManage()),
+                    new WorldListener(villageApi.getVillageManage()),
+                    new ConnectListener(villageApi.getVillageManage())
             ) + " listener(s).");
         } else {
             getLogger().info("Registered " + registerListeners(
-                    new EntityListener(this),
-                    new PlayerListener(this),
-                    new VillageListener(this),
-                    new WorldListener(villageManager),
-                    new CuboidEvent(villageManager),
-                    new MoveEvent(this)
+                    new EntityListener(villageApi.getVillageManage()),
+                    new PlayerListener(villageApi.getVillageManage()),
+                    new VillageListener(villageApi.getVillageManage()),
+                    new WorldListener(villageApi.getVillageManage()),
+                    new CuboidEvent(villageApi.getVillageManage()),
+                    new MoveEvent(villageApi.getVillageManage())
             ) + " listener(s).");
         }
     }
@@ -148,18 +100,13 @@ public class Villages extends JavaPlugin {
         return atomicInteger.get();
     }
 
-    public void registerMessages() {
-        Message.setConfiguration(fileManager.getFile(ConfigVillage.LANGUAGE));
-        getLogger().info("Registered " + Message.addMissingMessages() + " message(s).");
-    }
-
     public int registerHooks() {
         int index = 0;
         PlaceholderAPIBridge placeholderAPIBridge = new PlaceholderAPIBridge();
         placeholderAPIBridge.setupPlugin();
         if (PlaceholderAPIBridge.hasValidPlugin()) {
             getLogger().info("Successfully hooked into PlaceholderAPI.");
-            new PlaceholderAPIHook(this).register();
+            new PlaceholderAPIHook(this, villageApi.getVillageManage()).register();
             index += 1;
         }
         if (EconomyBridge.setupEconomy() && ConfigVillage.ECONOMY_ENABLE) {
@@ -186,7 +133,6 @@ public class Villages extends JavaPlugin {
 
     }
 
-
     @Override
     public void onLoad() {
         if (getServer().getPluginManager().getPlugin("WorldGuard") != null) {
@@ -199,11 +145,7 @@ public class Villages extends JavaPlugin {
     }
 
     public void onDisable() {
-        villageManager.unload();
-    }
-
-    public VillageManager getVillageManager() {
-        return villageManager;
+        villageApi.getVillageManage().unload();
     }
 
 }

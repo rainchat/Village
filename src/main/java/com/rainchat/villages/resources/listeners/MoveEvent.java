@@ -1,6 +1,5 @@
 package com.rainchat.villages.resources.listeners;
 
-import com.rainchat.villages.Villages;
 import com.rainchat.villages.api.events.PlayerChangeChunkEvent;
 import com.rainchat.villages.api.events.PlayerChangeLandEvent;
 import com.rainchat.villages.data.village.Village;
@@ -19,8 +18,8 @@ public class MoveEvent implements Listener {
 
     private final VillageManager villageManager;
 
-    public MoveEvent(Villages villages) {
-        this.villageManager = villages.getVillageManager();
+    public MoveEvent(VillageManager villageManager) {
+        this.villageManager = villageManager;
     }
 
 

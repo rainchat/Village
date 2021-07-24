@@ -4,6 +4,7 @@ import com.rainchat.rainlib.utils.Manager;
 import com.rainchat.villages.data.config.ConfigVillage;
 import com.rainchat.villages.data.enums.VillagePermission;
 import com.rainchat.villages.data.village.*;
+import com.rainchat.villages.utilities.general.MathUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -23,7 +24,7 @@ public class VillageManager extends Manager<Village> {
     private final Map<UUID, VillagePlayer> villagePlayers = new HashMap<>();
 
     public VillageManager(Plugin plugin) {
-        super("villages", plugin);
+        super("date/villages", plugin);
         this.plugin = plugin;
     }
 
@@ -38,6 +39,10 @@ public class VillageManager extends Manager<Village> {
 
     public void removePlayer(Player player) {
         villageRequestHashMap.remove(player.getUniqueId());
+    }
+
+    public void removeVillagePlayer(Player player) {
+       villagePlayers.remove(player.getUniqueId());
     }
 
     public void removeAdmin(Player player) {
@@ -88,6 +93,16 @@ public class VillageManager extends Manager<Village> {
         return null;
     }
 
+    public UUID generateUUID() {
+        UUID uuid = UUID.randomUUID();
+        for (Village village : toSet()) {
+            if (village.containsID(uuid)) {
+                return generateUUID();
+            }
+        }
+        return uuid;
+    }
+
     public OfflinePlayer offlinePlayer(Village village, String name) {
         for (VillageMember villageMember : village.getVillageMembers()) {
             OfflinePlayer offlinePlayer = plugin.getServer().getOfflinePlayer(villageMember.getUniqueId());
@@ -103,20 +118,20 @@ public class VillageManager extends Manager<Village> {
     }
 
     public int getMax(Player player) {
-        final AtomicInteger max = new AtomicInteger();
-
-        player.getEffectivePermissions().stream().map(PermissionAttachmentInfo::getPermission).map(String::toLowerCase).filter(value ->
-                value.startsWith("village.claims.")).map(value ->
-                value.replace("village.claims.", "")).forEach(value -> {
-            max.set(-1);
-            try {
-                if (Integer.parseInt(value) > max.get()) max.set(Integer.parseInt(value));
-            } catch (NumberFormatException ignored) {
-                max.set(0);
+        int SellLimit = 0;
+        for (PermissionAttachmentInfo permission : player.getEffectivePermissions()) {
+            String perm = permission.getPermission();
+            if (perm.startsWith("village.claims.")) {
+                perm = perm.replace("village.claims.", "");
+                if (MathUtil.isInt(perm)) {
+                    if (Integer.parseInt(perm) > SellLimit) {
+                        SellLimit = Integer.parseInt(perm);
+                    }
+                }
             }
-        });
+        }
 
-        return max.get();
+        return SellLimit;
     }
 
 
@@ -143,6 +158,7 @@ public class VillageManager extends Manager<Village> {
                     max.set(0);
                 }
             });
+            Bukkit.broadcastMessage(max.get() + "");
             return max.get();
         }
         return 0;
@@ -168,7 +184,7 @@ public class VillageManager extends Manager<Village> {
                 claims += getMax(player1);
             }
         }
-
+        claims += village.getExtraClaims();
         return claims;
     }
 

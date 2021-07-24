@@ -6,7 +6,7 @@
 
     <groupId>com.rainchat.</groupId>
     <artifactId>Villages</artifactId>
-    <version>1.5.4.9</version>
+    <version>1.7.0</version>
     <packaging>jar</packaging>
 
     <name>Villages</name>
@@ -118,7 +118,7 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>LATEST</version>
+            <version>1.17-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <!-- bStats -->
@@ -135,13 +135,13 @@
             <version>2.10.9</version>
             <scope>provided</scope>
         </dependency>
-        <!--Vault dependency-->
-        <dependency>
-            <groupId>com.github.MilkBowl</groupId>
-            <artifactId>VaultAPI</artifactId>
-            <version>1.7</version>
-            <scope>provided</scope>
-        </dependency>
+            <!--Vault dependency-->
+            <dependency>
+                <groupId>com.github.MilkBowl</groupId>
+                <artifactId>VaultAPI</artifactId>
+                <version>1.7</version>
+                <scope>provided</scope>
+            </dependency>
         <!--WorldGuard/WorldEdit dependency-->
         <dependency>
             <groupId>com.sk89q.worldguard</groupId>
@@ -168,6 +168,12 @@
             <groupId>co.aikar</groupId>
             <artifactId>acf-paper</artifactId> <!-- Don't forget to replace this -->
             <version>0.5.0-SNAPSHOT</version> <!-- Replace this as well -->
+        </dependency>
+        <!--XSeries dependency-->
+        <dependency>
+            <groupId>com.github.cryptomorin</groupId>
+            <artifactId>XSeries</artifactId>
+            <version>LATEST</version>
         </dependency>
     </dependencies>
 </project>
