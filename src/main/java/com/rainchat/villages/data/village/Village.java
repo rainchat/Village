@@ -1,7 +1,5 @@
 package com.rainchat.villages.data.village;
 
-import com.rainchat.villages.api.events.ClaimVillageEvent;
-import com.rainchat.villages.api.events.UnClaimVillageEvent;
 import com.rainchat.villages.data.enums.VillagePermission;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;

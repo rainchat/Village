@@ -6,7 +6,7 @@
 
     <groupId>com.rainchat.</groupId>
     <artifactId>Villages</artifactId>
-    <version>1.7.0</version>
+    <version>1.7.2</version>
     <packaging>jar</packaging>
 
     <name>Villages</name>
@@ -135,13 +135,13 @@
             <version>2.10.9</version>
             <scope>provided</scope>
         </dependency>
-            <!--Vault dependency-->
-            <dependency>
-                <groupId>com.github.MilkBowl</groupId>
-                <artifactId>VaultAPI</artifactId>
-                <version>1.7</version>
-                <scope>provided</scope>
-            </dependency>
+        <!--Vault dependency-->
+        <dependency>
+            <groupId>com.github.MilkBowl</groupId>
+            <artifactId>VaultAPI</artifactId>
+            <version>1.7</version>
+            <scope>provided</scope>
+        </dependency>
         <!--WorldGuard/WorldEdit dependency-->
         <dependency>
             <groupId>com.sk89q.worldguard</groupId>

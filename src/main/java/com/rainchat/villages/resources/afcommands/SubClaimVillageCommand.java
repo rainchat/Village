@@ -75,6 +75,11 @@ public class SubClaimVillageCommand extends BaseCommand {
                 return;
             }
 
+            if (village.getVillageSubRegions().size() < villageManager.checkMaxSubClaims(village)) {
+                player.sendMessage(Chat.format(Message.VILLAGE_MAX_SUB_CLAIMS.toString().replace("{0}", String.valueOf(villageManager.checkMaxSubClaims(village)))));
+                return;
+            }
+
             village.add(cuboid);
             Chat.sendTranslation(player, true, Message.VILLAGE_SUB_CLAIM.toString(), new VillageReplacements(village), new VillageSubClaimReplacements(cuboid));
         }

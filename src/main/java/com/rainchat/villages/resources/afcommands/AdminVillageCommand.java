@@ -86,6 +86,24 @@ public class AdminVillageCommand extends BaseCommand {
         }
     }
 
+    @Subcommand("menus")
+    @CommandCompletion("@nothing")
+    @CommandPermission("village.commands.admin.menus")
+    public void onMenuList(CommandSender sender) {
+        List<String> menus = menuManager.getAllMenu();
+
+        Chat.sendTranslation(sender, false, "&7----------------------------");
+        Chat.sendTranslation(sender, false, "&eMenuList:");
+        for (String menuName : FileManager.getInstance().getAllCategory("menus")) {
+            if (menus.contains(menuName)) {
+                Chat.sendTranslation(sender, false, "&a" + menuName);
+            } else {
+                Chat.sendTranslation(sender, false, "&c" + menuName);
+            }
+        }
+        Chat.sendTranslation(sender, false, "&7----------------------------");
+    }
+
     @Subcommand("convert")
     @Syntax("<village_name>")
     @CommandCompletion("@nothing")

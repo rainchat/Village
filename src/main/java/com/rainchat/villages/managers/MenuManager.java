@@ -32,8 +32,12 @@ public class MenuManager {
     public void setupMenus() {
         this.menus = new HashMap<>();
         for (String menuName : fileManager.getAllCategory("menus")) {
-            FileConfiguration file = fileManager.getFile(menuName).getFile();
-            menus.put(menuName, new MenuSettings(file));
+            try {
+                FileConfiguration file = fileManager.getFile(menuName).getFile();
+                menus.put(menuName, new MenuSettings(file));
+            } catch (NullPointerException exception) {
+                System.out.println(exception.getMessage());
+            }
         }
     }
 

@@ -96,6 +96,7 @@ public enum Message {
 
     VILLAGE_SUB_CLAIM_NULL("Messages.village-sub-claim-null", "&7Selected points are not in the village"),
     VILLAGE_SUB_CLAIM_CUT("Messages.village-sub-claim-cut", "&7subclaims cannot &7overlap"),
+    VILLAGE_MAX_SUB_CLAIMS("Messages.village-sub-claim-cut", "&7You can't sub-claim more than &b{0} &7land for you village"),
     VILLAGE_SUB_CLAIM_NAME("Messages.village-sub-claim-name", "&7The name for the &esubclaim &7must be unique"),
     VILLAGE_SUB_CLAIM_NAME_NULL("Messages.village-sub-claim-name-null", "&7There is no &esubclaim &7with this name."),
     VILLAGE_SUB_CLAIM_UNSELECTED("Messages.village-sub-claim-unselected", "&7pos for &esubclaim &7are not selected"),

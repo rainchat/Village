@@ -21,6 +21,7 @@ import com.rainchat.villages.utilities.general.Message;
 import com.rainchat.villages.utilities.general.ParticleSpawn;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import java.util.Objects;
@@ -47,6 +48,13 @@ public class ClaimVillageCommand extends BaseCommand {
                 Village tempVillage = villageManager.getVillage(player.getLocation().getChunk());
                 if (tempVillage == village) {
                     if (village.getVillageClaims().size() > 1) {
+
+                        UnClaimVillageEvent event = new UnClaimVillageEvent(village, player.getLocation().getChunk(), player);
+                        Bukkit.getServer().getPluginManager().callEvent(event);
+
+                        if (event.isCancelled()) return;
+
+
                         VillageClaim villageClaim = villageManager.getClaim(village, player.getLocation().getChunk());
                         village.remove(villageClaim);
                         ParticleSpawn.particleTusc(player, player.getLocation().getChunk(), ParticleTip.UN_CLAIM);
@@ -84,10 +92,10 @@ public class ClaimVillageCommand extends BaseCommand {
             player.sendMessage(Chat.format(Message.VILLAGE_UNCLAIM_ONE.toString()));
         }
 
-        UnClaimVillageEvent chunkEvent = new UnClaimVillageEvent(village, null, player);
-        Bukkit.getServer().getPluginManager().callEvent(chunkEvent);
+        UnClaimVillageEvent event = new UnClaimVillageEvent(village, new Location(Bukkit.getWorld(world),x*16,0,y*16).getChunk(), player);
+        Bukkit.getServer().getPluginManager().callEvent(event);
 
-        if (chunkEvent.isCancelled()) return;
+        if (event.isCancelled()) return;
 
         VillageClaim villageClaim = villageManager.getClaim(village, player.getLocation().getChunk());
         village.remove(villageClaim);

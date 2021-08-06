@@ -71,6 +71,7 @@ public class Villages extends JavaPlugin {
                     new VillageListener(villageApi.getVillageManage()),
                     new WorldListener(villageApi.getVillageManage()),
                     new MoveEvent(villageApi.getVillageManage()),
+                    new CuboidEvent(villageApi.getVillageManage()),
                     new ConnectListener(villageApi.getVillageManage())
             ) + " listener(s).");
         } else if (claim_mode.equalsIgnoreCase("ROLEPLAY")) {

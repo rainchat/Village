@@ -46,7 +46,7 @@ public final class ExtensionLoader {
     }
 
     public List<VillageExtension> load(File extensionFile) {
-        ServerLog.log(Level.INFO, "Loader - Reading file: " + extensionFile.getName());
+        //ServerLog.log(Level.INFO, "Loader - Reading file: " + extensionFile.getName());
 
         JarFile jar;
         try {
@@ -75,7 +75,7 @@ public final class ExtensionLoader {
                 continue;
 
             String className = entry.getName().substring(0, entry.getName().length() - 6).replace('/', '.');
-            ServerLog.log(Level.INFO, "Loader - Loading class: " + className);
+            //ServerLog.log(Level.INFO, "Loader - Loading class: " + className);
             Class<?> clazz;
             try {
                 clazz = newLoader.loadClass(className);
@@ -87,7 +87,7 @@ public final class ExtensionLoader {
             }
 
             if (VillageExtension.class.isAssignableFrom(clazz)) {
-                ServerLog.log(Level.WARNING, "Loader - Found extension class: " + className);
+                //ServerLog.log(Level.WARNING, "Loader - Found extension class: " + className);
                 extensionClasses.add(clazz);
             }
         }
@@ -95,7 +95,7 @@ public final class ExtensionLoader {
         List<VillageExtension> extensions = new ArrayList<>();
 
         for (Class<?> extensionClass : extensionClasses) {
-            ServerLog.log(Level.INFO, "Loader - Constructing: " + extensionClass.getName());
+            //ServerLog.log(Level.INFO, "Loader - Constructing: " + extensionClass.getName());
             VillageExtension extension;
             try {
                 extension = (VillageExtension) extensionClass.getConstructor().newInstance();

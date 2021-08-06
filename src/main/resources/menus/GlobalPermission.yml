@@ -14,12 +14,14 @@ Menu-settings:
 
 Pagination-items:
   type: global-permission
-  name: "&a%Permission%"
+  name: "&a%gflag_getName%"
   material: Book
   lore:
-    - '&7click to change'
+    - '&7Status: %gflag_getStatus%'
+    - ''
+    - '&e» &7click to change &e«'
   actions:
-    - "[tell] no"
+    - ""
 
 
 

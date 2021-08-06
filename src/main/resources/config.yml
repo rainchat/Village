@@ -28,6 +28,10 @@ Settings-Claim:
   expiration:
     time: 5
 
+Settings-Sub-Claim:
+  default-claim-limit: 3
+  default-claim-per-member: 1
+
 Placeholders:
     enable-flag: '&aenable'
     disable-flag:  '&cdisable'

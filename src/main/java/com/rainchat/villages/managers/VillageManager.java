@@ -188,6 +188,22 @@ public class VillageManager extends Manager<Village> {
         return claims;
     }
 
+    public int checkMaxSubClaims(Village village) {
+        int claims = 0;
+        int perMemberLimit = 0;
+
+
+        int defaultClaimLimit = ConfigVillage.SUB_DEFAULT_CLAIM_LIMIT;
+        if (village.getVillageMembers().size() > 1) {
+            perMemberLimit = (ConfigVillage.SUB_CLAIM_ADD_PER_MEMBER) * (village.getVillageMembers().size() - 1);
+        }
+        claims += perMemberLimit;
+        claims += defaultClaimLimit;
+
+
+        return claims;
+    }
+
 
     public boolean canClaim(Village village) {
         return checkMaxClaims(village) > village.getVillageClaims().size();
