@@ -1,2 +1,2 @@
 # Village
-fork StefTheDev
+My version plugin StefTheDev:Village
